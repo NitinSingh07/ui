@@ -3,7 +3,6 @@
 import BoltIcon from '@mui/icons-material/Bolt';
 import SaveIcon from '@mui/icons-material/Save';
 import SendIcon from '@mui/icons-material/Send';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import UndoIcon from '@mui/icons-material/Undo';
@@ -21,6 +20,8 @@ import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import AccountTreeOutlinedIcon from '@mui/icons-material/AccountTreeOutlined';
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import RecipientsPanel from './components/RecipientsPanel';
+import WorkflowNode from './components/WorkflowNode';
 
 const NewActionFlowPage = () => {
   const router = useRouter();
@@ -31,7 +32,9 @@ const NewActionFlowPage = () => {
     tag: '',
     notificationType: '',
   });
-  const [workflowNode, setWorkflowNode] = useState(null);
+  const [workflowNode, setWorkflowNode] = useState<any>(null);
+  const [recipientsNode, setRecipientsNode] = useState<any>(null);
+  const [showRecipientsPanel, setShowRecipientsPanel] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSaveHandler = async () => {
@@ -98,6 +101,53 @@ const NewActionFlowPage = () => {
     }
   };
 
+  const handleSaveRecipients = (data: any) => {
+    // Create recipients node
+    setRecipientsNode({
+      id: Date.now() + 1,
+      name: 'Recipients',
+      description: `You are using ${data.selectedAudience} cohort from ${data.customerPool} pool.`,
+      type: 'recipients',
+      position: { x: 0, y: 0 }, // Position will be handled by flexbox
+      recipientsData: data,
+    });
+  };
+
+  const handleRecipientsDataChange = (data: any) => {
+    // Update recipients node in real-time
+    if (recipientsNode) {
+      setRecipientsNode({
+        ...recipientsNode,
+        description: `You are using ${data.selectedAudience} cohort from ${data.customerPool} pool.`,
+        recipientsData: data,
+      });
+    }
+  };
+
+  const handleStorageIconClick = () => {
+    if (workflowNode) {
+      // Create initial recipients node when panel opens
+      if (!recipientsNode) {
+        setRecipientsNode({
+          id: Date.now() + 1,
+          name: 'Recipients',
+          description: 'You are using Active users cohort from Instagram pool.',
+          type: 'recipients',
+          position: { x: 0, y: 0 },
+          recipientsData: {
+            customerPool: 'Instagram',
+            recipientType: 'cohorts',
+            searchQuery: 'Active users',
+            selectedAudience: 'Active users',
+          },
+        });
+      }
+      setShowRecipientsPanel(true);
+    } else {
+      alert('Please create a handler first by clicking "Click to start"');
+    }
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
       {/* Main Header */}
@@ -124,9 +174,17 @@ const NewActionFlowPage = () => {
 
       {/* Main Content Area */}
       <div className="flex-1 pt-[8px] relative">
+        {/* Recipients Panel - Overlay */}
+        <RecipientsPanel
+          isOpen={showRecipientsPanel}
+          onClose={() => setShowRecipientsPanel(false)}
+          onSave={handleSaveRecipients}
+          onDataChange={handleRecipientsDataChange}
+        />
+
         {/* Left Handler Panel - Overlay */}
         {showHandlerPanel && (
-          <div className="absolute left-[14px]  w-[380px] h-[680px] bg-[#FFFFFF] rounded-xl flex flex-col z-10 shadow-lg">
+          <div className="absolute left-[14px]  w-[380px] h-[680px] bg-[#FFFFFF] rounded-xl flex flex-col z-20 ">
             <div className="pt-[24px] pb-[24px] pl-[12px] pr-[12px] flex-1 flex flex-col">
               <h2 className="text-lg font-semibold text-text-primary mb-6">
                 Enter Handler details
@@ -170,6 +228,7 @@ const NewActionFlowPage = () => {
                     value={handlerData.tag}
                     onChange={(e) => setHandlerData((prev) => ({ ...prev, tag: e.target.value }))}
                     className="w-full h-10 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                    aria-label="Select tag"
                   >
                     <option value="">Select</option>
                     <option value="urgent">Urgent</option>
@@ -189,6 +248,7 @@ const NewActionFlowPage = () => {
                       setHandlerData((prev) => ({ ...prev, notificationType: e.target.value }))
                     }
                     className="w-full h-10 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                    aria-label="Select notification type"
                   >
                     <option value="">Select</option>
                     <option value="email">Email</option>
@@ -213,10 +273,10 @@ const NewActionFlowPage = () => {
           </div>
         )}
 
-        {/* Backdrop/Overlay */}
+        {/* Backdrop/Overlay - Only behind handler panel */}
         {showHandlerPanel && (
           <div
-            className="absolute inset-0 bg-black bg-opacity-20 z-5"
+            className="absolute left-[14px] top-[85px] w-[380px] h-[680px] bg-black bg-opacity-20 z-[5] rounded-xl"
             onClick={() => setShowHandlerPanel(false)}
           />
         )}
@@ -224,66 +284,108 @@ const NewActionFlowPage = () => {
         {/* Canvas */}
         <div className="absolute inset-0 bg-zinc-100">
           {/* Left toolbar */}
-          <div className="absolute left-[14px] top-[232px] w-[56px] h-[432px] bg-[#BBBBBB] rounded-lg flex flex-col items-center py-4 gap-3 shadow-sm">
-            {/* 1. Database Icon - Digest */}
-            <button className="w-8 h-8 bg-background-offsetWeak rounded-md flex items-center justify-center hover:bg-background-offsetWeak/80 transition-colors">
+          <div className="absolute left-[14px] top-[232px] w-[56px] h-[432px] bg-[#BBBBBB] rounded-lg flex flex-col items-center py-4 gap-3 shadow-sm z-10">
+            {/* 1. Database Icon - Recipients */}
+            <button
+              className="w-8 h-8 bg-background-offsetWeak rounded-md flex items-center justify-center hover:bg-background-offsetWeak/80 transition-colors"
+              onClick={handleStorageIconClick}
+              title="Add Recipients"
+            >
               <StorageIcon fontSize="small" className="text-text-secondary" />
             </button>
 
             {/* 2. Hierarchical Structure - Binary/Multiple Conditions */}
-            <button className="w-8 h-8 bg-background-offsetWeak rounded-md flex items-center justify-center hover:bg-background-offsetWeak/80 transition-colors">
+            <button
+              className="w-8 h-8 bg-background-offsetWeak rounded-md flex items-center justify-center hover:bg-background-offsetWeak/80 transition-colors"
+              title="Add Conditions"
+            >
               <AccountTreeIcon fontSize="small" className="text-text-secondary" />
             </button>
 
             {/* 3. Network/Connections - Channel Router */}
-            <button className="w-8 h-8 bg-background-offsetWeak rounded-md flex items-center justify-center hover:bg-background-offsetWeak/80 transition-colors">
+            <button
+              className="w-8 h-8 bg-background-offsetWeak rounded-md flex items-center justify-center hover:bg-background-offsetWeak/80 transition-colors"
+              title="Add Channel Router"
+            >
               <HubIcon fontSize="small" className="text-text-secondary" />
             </button>
 
             {/* 4. Clock with Plus - Schedule */}
-            <button className="w-8 h-8 bg-background-offsetWeak rounded-md flex items-center justify-center hover:bg-background-offsetWeak/80 transition-colors">
+            <button
+              className="w-8 h-8 bg-background-offsetWeak rounded-md flex items-center justify-center hover:bg-background-offsetWeak/80 transition-colors"
+              title="Add Schedule"
+            >
               <ScheduleIcon fontSize="small" className="text-text-secondary" />
             </button>
 
             {/* 5. Clock with Hourglass - Delay */}
-            <button className="w-8 h-8 bg-background-offsetWeak rounded-md flex items-center justify-center hover:bg-background-offsetWeak/80 transition-colors">
+            <button
+              className="w-8 h-8 bg-background-offsetWeak rounded-md flex items-center justify-center hover:bg-background-offsetWeak/80 transition-colors"
+              title="Add Delay"
+            >
               <HourglassEmptyIcon fontSize="small" className="text-text-secondary" />
             </button>
 
             {/* 6. Document/Page - Template */}
-            <button className="w-8 h-8 bg-background-offsetWeak rounded-md flex items-center justify-center hover:bg-background-offsetWeak/80 transition-colors">
+            <button
+              className="w-8 h-8 bg-background-offsetWeak rounded-md flex items-center justify-center hover:bg-background-offsetWeak/80 transition-colors"
+              title="Add Template"
+            >
               <DescriptionIcon fontSize="small" className="text-text-secondary" />
             </button>
 
             {/* 7. Person with Plus - Recipients */}
-            <button className="w-8 h-8 bg-background-offsetWeak rounded-md flex items-center justify-center hover:bg-background-offsetWeak/80 transition-colors">
+            <button
+              className="w-8 h-8 bg-background-offsetWeak rounded-md flex items-center justify-center hover:bg-background-offsetWeak/80 transition-colors"
+              title="Add Recipients"
+            >
               <PersonAddIcon fontSize="small" className="text-text-secondary" />
             </button>
 
             {/* 8. Calendar - Schedule */}
-            <button className="w-8 h-8 bg-background-offsetWeak rounded-md flex items-center justify-center hover:bg-background-offsetWeak/80 transition-colors">
+            <button
+              className="w-8 h-8 bg-background-offsetWeak rounded-md flex items-center justify-center hover:bg-background-offsetWeak/80 transition-colors"
+              title="Add Calendar"
+            >
               <CalendarTodayIcon fontSize="small" className="text-text-secondary" />
             </button>
 
             {/* 9. Large Hierarchical Structure - Workflow Node */}
-            <button className="w-8 h-8 bg-background-offsetWeak rounded-md flex items-center justify-center hover:bg-background-offsetWeak/80 transition-colors">
+            <button
+              className="w-8 h-8 bg-background-offsetWeak rounded-md flex items-center justify-center hover:bg-background-offsetWeak/80 transition-colors"
+              title="Add Workflow Node"
+            >
               <AccountTreeOutlinedIcon fontSize="small" className="text-text-secondary" />
             </button>
           </div>
 
-          {/* Center content - either start button or workflow node */}
+          {/* Center content - either start button or workflow nodes */}
           <div className="absolute inset-0 flex items-center justify-center">
             {workflowNode ? (
-              <div className="text-center">
-                {/* Workflow Node Card */}
-                <div className="bg-white rounded border-l-2 border-l-[#BBBBBB] h-[54px] w-[200px] p-[10px] flex items-center gap-[10px] shadow-lg">
-                  <div className="flex flex-col text-left min-w-0 flex-1">
-                    <h3 className="text-sm font-medium text-gray-900 truncate">
-                      {workflowNode.name}
-                    </h3>
-                    <p className="text-xs text-gray-500 truncate">{workflowNode.description}</p>
-                  </div>
-                </div>
+              <div className="flex flex-col items-center gap-4">
+                {/* Handler Node */}
+                <WorkflowNode
+                  id={workflowNode.id}
+                  name={workflowNode.name}
+                  description={workflowNode.description}
+                  type="handler"
+                  position={{ x: 0, y: 0 }}
+                />
+
+                {/* Connection Line */}
+                {recipientsNode && <div className="w-[2px] h-[46px] bg-gray-300"></div>}
+
+                {/* Recipients Node */}
+                {recipientsNode && (
+                  <WorkflowNode
+                    id={recipientsNode.id}
+                    name={recipientsNode.name}
+                    description={recipientsNode.description}
+                    type="recipients"
+                    position={{ x: 0, y: 0 }}
+                    recipientsData={recipientsNode.recipientsData}
+                  />
+                )}
               </div>
             ) : (
               <div className="text-center">
@@ -299,27 +401,42 @@ const NewActionFlowPage = () => {
           </div>
 
           {/* Bottom toolbar */}
-          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-white border border-divider rounded-full px-4 py-2 flex items-center gap-4 shadow-sm">
-            <button className="w-6 h-6 flex items-center justify-center text-text-secondary hover:text-text-primary transition-colors">
+          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-white border border-divider rounded-full px-4 py-2 flex items-center gap-4 shadow-sm z-10">
+            <button
+              className="w-6 h-6 flex items-center justify-center text-text-secondary hover:text-text-primary transition-colors"
+              title="Undo"
+            >
               <UndoIcon fontSize="small" />
             </button>
-            <button className="w-6 h-6 flex items-center justify-center text-text-secondary hover:text-text-primary transition-colors">
+            <button
+              className="w-6 h-6 flex items-center justify-center text-text-secondary hover:text-text-primary transition-colors"
+              title="Redo"
+            >
               <RedoIcon fontSize="small" />
             </button>
-            <button className="w-6 h-6 flex items-center justify-center text-text-secondary hover:text-text-primary transition-colors">
+            <button
+              className="w-6 h-6 flex items-center justify-center text-text-secondary hover:text-text-primary transition-colors"
+              title="Zoom Out"
+            >
               <RemoveIcon fontSize="small" />
             </button>
             <span className="text-sm text-text-secondary">100%</span>
-            <button className="w-6 h-6 flex items-center justify-center text-text-secondary hover:text-text-primary transition-colors">
+            <button
+              className="w-6 h-6 flex items-center justify-center text-text-secondary hover:text-text-primary transition-colors"
+              title="Zoom In"
+            >
               <AddIcon fontSize="small" />
             </button>
-            <button className="w-6 h-6 flex items-center justify-center text-text-secondary hover:text-text-primary transition-colors">
+            <button
+              className="w-6 h-6 flex items-center justify-center text-text-secondary hover:text-text-primary transition-colors"
+              title="Help"
+            >
               <HelpOutlineIcon fontSize="small" />
             </button>
           </div>
 
           {/* Right bottom button */}
-          <div className="absolute right-[16px] bottom-[16px] w-[52px] h-[52px] bg-[#FAFAFA] border border-[#DEDEDE] rounded-lg flex items-center justify-center shadow-sm">
+          <div className="absolute right-[16px] bottom-[16px] w-[52px] h-[52px] bg-[#FAFAFA] border border-[#DEDEDE] rounded-lg flex items-center justify-center shadow-sm z-10">
             <AutoAwesomeIcon fontSize="small" className="text-text-secondary" />
           </div>
         </div>
