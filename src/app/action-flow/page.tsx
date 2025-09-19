@@ -12,9 +12,12 @@ import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import ViewListOutlinedIcon from '@mui/icons-material/ViewListOutlined';
 import { IconButton, InputAdornment, TextField } from '@mui/material';
 import React, { useMemo, useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 const ActionFlow = () => {
+  const router = useRouter();
   const [searchQuery, setSearchQuery] = useState('');
+  const [collapsed, setCollapsed] = useState(false);
 
   const workflows = useMemo(
     () => [
@@ -56,15 +59,21 @@ const ActionFlow = () => {
   return (
     <div className="min-h-screen bg-background-default flex">
       {/* Sidebar */}
-      <aside className="w-[220px] min-h-screen bg-white border-r border-divider flex flex-col justify-between">
+      <aside
+        className={`${collapsed ? 'w-16' : 'w-[220px]'} min-h-screen bg-white border-r border-divider flex flex-col justify-between transition-all`}
+      >
         <div>
           {/* Top brand and back */}
           <div className="h-16 flex items-center gap-3 px-4 border-b border-divider">
             <div className="w-8 h-8 rounded bg-primary-main/10 text-primary-main flex items-center justify-center">
               <ViewListOutlinedIcon fontSize="small" />
             </div>
-            <button className="ml-auto text-text-secondary hover:text-text-primary transition-colors">
-              <ChevronLeftIcon />
+            <button
+              className="ml-auto text-text-secondary hover:text-text-primary transition-colors"
+              onClick={() => setCollapsed((v) => !v)}
+              aria-label="Collapse sidebar"
+            >
+              <ChevronLeftIcon className={`${collapsed ? 'rotate-180' : ''} transition`} />
             </button>
           </div>
 
@@ -73,9 +82,11 @@ const ActionFlow = () => {
             <div className="w-8 h-8 rounded-full bg-[#E9F1FF] text-[#A855F7] flex items-center justify-center text-xs font-semibold">
               AB
             </div>
-            <div className="flex-1">
-              <div className="text-sm text-text-primary">Project name</div>
-            </div>
+            {!collapsed && (
+              <div className="flex-1">
+                <div className="text-sm text-text-primary">Project name</div>
+              </div>
+            )}
           </div>
 
           {/* Nav */}
@@ -83,67 +94,69 @@ const ActionFlow = () => {
             <div className="px-2 py-1">
               <a className="flex items-center gap-3 px-3 py-2 rounded hover:bg-background-offsetWeak cursor-pointer text-text-primary">
                 <DashboardOutlinedIcon fontSize="small" className="text-text-secondary" />
-                Dashboard
+                {!collapsed && <span>Dashboard</span>}
               </a>
             </div>
             <div className="px-2 py-1">
               <a className="flex items-center gap-3 px-3 py-2 rounded hover:bg-background-offsetWeak cursor-pointer text-text-primary">
                 <ViewListOutlinedIcon fontSize="small" className="text-text-secondary" />
-                Services
+                {!collapsed && <span>Services</span>}
               </a>
             </div>
             <div className="px-2 py-1">
               <a className="flex items-center gap-3 px-3 py-2 rounded hover:bg-background-offsetWeak cursor-pointer text-text-primary">
                 <SettingsOutlinedIcon fontSize="small" className="text-text-secondary" />
-                Configurations
+                {!collapsed && <span>Configurations</span>}
               </a>
             </div>
             <div className="px-2 py-1">
               <a className="flex items-center gap-3 px-3 py-2 rounded hover:bg-background-offsetWeak cursor-pointer text-text-primary">
                 <GroupOutlinedIcon fontSize="small" className="text-text-secondary" />
-                Members
+                {!collapsed && <span>Members</span>}
               </a>
             </div>
 
             {/* Divider */}
-            <div className="px-4 py-3 text-xs text-text-secondary">NOTIFICATION</div>
+            {!collapsed && (
+              <div className="px-4 py-3 text-xs text-text-secondary">NOTIFICATION</div>
+            )}
 
             <div className="px-2 py-1">
               <a className="flex items-center gap-3 px-3 py-2 rounded hover:bg-background-offsetWeak cursor-pointer text-text-primary">
                 <ListAltOutlinedIcon fontSize="small" className="text-text-secondary" />
-                Notification Handler
+                {!collapsed && <span>Notification Handler</span>}
               </a>
             </div>
 
             <div className="px-2 py-1">
               <a className="flex items-center gap-3 px-3 py-2 rounded cursor-pointer bg-[#E6F4F1] text-[#1D9D74]">
                 <ViewListOutlinedIcon fontSize="small" />
-                Action flow
+                {!collapsed && <span>Action flow</span>}
               </a>
             </div>
 
             <div className="px-2 py-1">
               <a className="flex items-center gap-3 px-3 py-2 rounded hover:bg-background-offsetWeak cursor-pointer text-text-primary">
                 <ViewListOutlinedIcon fontSize="small" className="text-text-secondary" />
-                Groups
+                {!collapsed && <span>Groups</span>}
               </a>
             </div>
             <div className="px-2 py-1">
               <a className="flex items-center gap-3 px-3 py-2 rounded hover:bg-background-offsetWeak cursor-pointer text-text-primary">
                 <ListAltOutlinedIcon fontSize="small" className="text-text-secondary" />
-                Templates
+                {!collapsed && <span>Templates</span>}
               </a>
             </div>
             <div className="px-2 py-1">
               <a className="flex items-center gap-3 px-3 py-2 rounded hover:bg-background-offsetWeak cursor-pointer text-text-primary">
                 <GroupOutlinedIcon fontSize="small" className="text-text-secondary" />
-                Customers
+                {!collapsed && <span>Customers</span>}
               </a>
             </div>
             <div className="px-2 py-1">
               <a className="flex items-center gap-3 px-3 py-2 rounded hover:bg-background-offsetWeak cursor-pointer text-text-primary">
                 <ListAltOutlinedIcon fontSize="small" className="text-text-secondary" />
-                Logs
+                {!collapsed && <span>Logs</span>}
               </a>
             </div>
           </nav>
@@ -154,10 +167,12 @@ const ActionFlow = () => {
           <div className="w-8 h-8 rounded bg-[#E9F1FF] flex items-center justify-center text-[#A855F7] text-sm">
             G
           </div>
-          <div className="flex-1">
-            <div className="text-sm text-text-primary">Google</div>
-            <div className="text-xs text-text-secondary">2443454454</div>
-          </div>
+          {!collapsed && (
+            <div className="flex-1">
+              <div className="text-sm text-text-primary">Google</div>
+              <div className="text-xs text-text-secondary">2443454454</div>
+            </div>
+          )}
         </div>
       </aside>
 
@@ -172,6 +187,14 @@ const ActionFlow = () => {
             <h1 className="text-lg font-medium text-text-primary">Action flow</h1>
           </div>
           <div className="flex items-center gap-3">
+            {/* Create new project button (top-right +) */}
+            <button
+              className="flex items-center justify-center w-10 h-10 rounded-md border border-divider bg-white text-text-primary hover:bg-background-offsetWeak"
+              aria-label="Create project"
+              onClick={() => router.push('/action-flow/new')}
+            >
+              <AddIcon fontSize="small" />
+            </button>
             <NotificationsNoneOutlinedIcon className="text-text-secondary" />
             <div className="w-8 h-8 rounded-full bg-[#E9F1FF] text-[#A855F7] flex items-center justify-center text-xs font-semibold">
               AB
@@ -205,13 +228,7 @@ const ActionFlow = () => {
             }}
           />
 
-          {/* Right top + to create new project */}
-          <button
-            className="flex items-center justify-center w-10 h-10 rounded-md border border-divider bg-white text-text-primary hover:bg-background-offsetWeak"
-            aria-label="Create project"
-          >
-            <AddIcon fontSize="small" />
-          </button>
+          <span />
         </div>
 
         {/* Table */}
@@ -233,12 +250,21 @@ const ActionFlow = () => {
                     i !== filtered.length - 1 ? 'border-b border-[#E5E7EB]' : ''
                   }`}
                 >
-                  <div className="col-span-6 text-text-primary">{w.name}</div>
+                  <div
+                    className="col-span-6 text-text-primary cursor-pointer"
+                    onClick={() => router.push('/action-flow/new')}
+                  >
+                    {w.name}
+                  </div>
                   <div className="col-span-5 text-text-secondary">
                     This flow deals specifically churn users and all their impacts.
                   </div>
                   <div className="col-span-1 flex justify-end">
-                    <IconButton size="small" sx={{ color: 'var(--success-main)' }}>
+                    <IconButton
+                      size="small"
+                      sx={{ color: 'var(--success-main)' }}
+                      onClick={() => router.push('/action-flow/new')}
+                    >
                       <EditIcon fontSize="small" />
                     </IconButton>
                   </div>
