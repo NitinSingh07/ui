@@ -18,8 +18,7 @@ const ActionFlow = () => {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState('');
   const [collapsed, setCollapsed] = useState(false);
-
-  const workflows = useMemo(
+  const initialWorkflows = useMemo(
     () => [
       {
         id: 1,
@@ -49,12 +48,28 @@ const ActionFlow = () => {
     ],
     []
   );
+  const [workflows, setWorkflows] = useState(initialWorkflows);
+  const [editingId, setEditingId] = useState<number | null>(null);
+  const [tempName, setTempName] = useState('');
 
   const filtered = useMemo(() => {
     const q = searchQuery.trim().toLowerCase();
     if (!q) return workflows;
     return workflows.filter((w) => w.name.toLowerCase().includes(q));
   }, [workflows, searchQuery]);
+
+  const startEdit = (id: number, currentName: string) => {
+    setEditingId(id);
+    setTempName(currentName);
+  };
+
+  const commitEdit = () => {
+    if (editingId == null) return;
+    setWorkflows((prev) =>
+      prev.map((w) => (w.id === editingId ? { ...w, name: tempName.trim() || w.name } : w))
+    );
+    setEditingId(null);
+  };
 
   return (
     <div className="min-h-screen bg-background-default flex">
@@ -250,11 +265,22 @@ const ActionFlow = () => {
                     i !== filtered.length - 1 ? 'border-b border-[#E5E7EB]' : ''
                   }`}
                 >
-                  <div
-                    className="col-span-6 text-text-primary cursor-pointer"
-                    onClick={() => router.push('/action-flow/new')}
-                  >
-                    {w.name}
+                  <div className="col-span-6 text-text-primary">
+                    {editingId === w.id ? (
+                      <input
+                        autoFocus
+                        value={tempName}
+                        onChange={(e) => setTempName(e.target.value)}
+                        onBlur={commitEdit}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') commitEdit();
+                          if (e.key === 'Escape') setEditingId(null);
+                        }}
+                        className="w-full bg-transparent outline-none border border-[#D1D5DB] rounded px-2 py-1"
+                      />
+                    ) : (
+                      <span>{w.name}</span>
+                    )}
                   </div>
                   <div className="col-span-5 text-text-secondary">
                     This flow deals specifically churn users and all their impacts.
@@ -263,7 +289,8 @@ const ActionFlow = () => {
                     <IconButton
                       size="small"
                       sx={{ color: 'var(--success-main)' }}
-                      onClick={() => router.push('/action-flow/new')}
+                      onClick={() => startEdit(w.id, w.name)}
+                      aria-label="Edit name"
                     >
                       <EditIcon fontSize="small" />
                     </IconButton>
