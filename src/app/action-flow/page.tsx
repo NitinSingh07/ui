@@ -10,6 +10,15 @@ import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNone
 import SearchIcon from '@mui/icons-material/Search';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import ViewListOutlinedIcon from '@mui/icons-material/ViewListOutlined';
+import AppsIcon from '@mui/icons-material/Apps';
+import TuneIcon from '@mui/icons-material/Tune';
+import PersonIcon from '@mui/icons-material/Person';
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import GpsFixedIcon from '@mui/icons-material/GpsFixed';
+import DescriptionIcon from '@mui/icons-material/Description';
+import PeopleIcon from '@mui/icons-material/People';
+import ScheduleIcon from '@mui/icons-material/Schedule';
+import PublicIcon from '@mui/icons-material/Public';
 import { IconButton, InputAdornment, TextField } from '@mui/material';
 import React, { useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -51,6 +60,7 @@ const ActionFlow = () => {
   const [workflows, setWorkflows] = useState(initialWorkflows);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [tempName, setTempName] = useState('');
+  const [tempDesc, setTempDesc] = useState('');
 
   const filtered = useMemo(() => {
     const q = searchQuery.trim().toLowerCase();
@@ -58,15 +68,24 @@ const ActionFlow = () => {
     return workflows.filter((w) => w.name.toLowerCase().includes(q));
   }, [workflows, searchQuery]);
 
-  const startEdit = (id: number, currentName: string) => {
+  const startEdit = (id: number, currentName: string, currentDesc: string) => {
     setEditingId(id);
     setTempName(currentName);
+    setTempDesc(currentDesc);
   };
 
   const commitEdit = () => {
     if (editingId == null) return;
     setWorkflows((prev) =>
-      prev.map((w) => (w.id === editingId ? { ...w, name: tempName.trim() || w.name } : w))
+      prev.map((w) =>
+        w.id === editingId
+          ? {
+              ...w,
+              name: tempName.trim() || w.name,
+              description: tempDesc.trim() || w.description,
+            }
+          : w
+      )
     );
     setEditingId(null);
   };
@@ -114,19 +133,19 @@ const ActionFlow = () => {
             </div>
             <div className="px-2 py-1">
               <a className="flex items-center gap-3 px-3 py-2 rounded hover:bg-background-offsetWeak cursor-pointer text-text-primary">
-                <ViewListOutlinedIcon fontSize="small" className="text-text-secondary" />
+                <AppsIcon fontSize="small" className="text-text-secondary" />
                 {!collapsed && <span>Services</span>}
               </a>
             </div>
             <div className="px-2 py-1">
               <a className="flex items-center gap-3 px-3 py-2 rounded hover:bg-background-offsetWeak cursor-pointer text-text-primary">
-                <SettingsOutlinedIcon fontSize="small" className="text-text-secondary" />
+                <TuneIcon fontSize="small" className="text-text-secondary" />
                 {!collapsed && <span>Configurations</span>}
               </a>
             </div>
             <div className="px-2 py-1">
               <a className="flex items-center gap-3 px-3 py-2 rounded hover:bg-background-offsetWeak cursor-pointer text-text-primary">
-                <GroupOutlinedIcon fontSize="small" className="text-text-secondary" />
+                <PersonIcon fontSize="small" className="text-text-secondary" />
                 {!collapsed && <span>Members</span>}
               </a>
             </div>
@@ -138,39 +157,39 @@ const ActionFlow = () => {
 
             <div className="px-2 py-1">
               <a className="flex items-center gap-3 px-3 py-2 rounded hover:bg-background-offsetWeak cursor-pointer text-text-primary">
-                <ListAltOutlinedIcon fontSize="small" className="text-text-secondary" />
+                <CalendarTodayIcon fontSize="small" className="text-text-secondary" />
                 {!collapsed && <span>Notification Handler</span>}
               </a>
             </div>
 
             <div className="px-2 py-1">
               <a className="flex items-center gap-3 px-3 py-2 rounded cursor-pointer bg-[#E6F4F1] text-[#1D9D74]">
-                <ViewListOutlinedIcon fontSize="small" />
+                <AppsIcon fontSize="small" />
                 {!collapsed && <span>Action flow</span>}
               </a>
             </div>
 
             <div className="px-2 py-1">
               <a className="flex items-center gap-3 px-3 py-2 rounded hover:bg-background-offsetWeak cursor-pointer text-text-primary">
-                <ViewListOutlinedIcon fontSize="small" className="text-text-secondary" />
+                <GpsFixedIcon fontSize="small" className="text-text-secondary" />
                 {!collapsed && <span>Groups</span>}
               </a>
             </div>
             <div className="px-2 py-1">
               <a className="flex items-center gap-3 px-3 py-2 rounded hover:bg-background-offsetWeak cursor-pointer text-text-primary">
-                <ListAltOutlinedIcon fontSize="small" className="text-text-secondary" />
+                <DescriptionIcon fontSize="small" className="text-text-secondary" />
                 {!collapsed && <span>Templates</span>}
               </a>
             </div>
             <div className="px-2 py-1">
               <a className="flex items-center gap-3 px-3 py-2 rounded hover:bg-background-offsetWeak cursor-pointer text-text-primary">
-                <GroupOutlinedIcon fontSize="small" className="text-text-secondary" />
+                <PeopleIcon fontSize="small" className="text-text-secondary" />
                 {!collapsed && <span>Customers</span>}
               </a>
             </div>
             <div className="px-2 py-1">
               <a className="flex items-center gap-3 px-3 py-2 rounded hover:bg-background-offsetWeak cursor-pointer text-text-primary">
-                <ListAltOutlinedIcon fontSize="small" className="text-text-secondary" />
+                <ScheduleIcon fontSize="small" className="text-text-secondary" />
                 {!collapsed && <span>Logs</span>}
               </a>
             </div>
@@ -179,8 +198,8 @@ const ActionFlow = () => {
 
         {/* Bottom org selector */}
         <div className="px-4 py-3 border-t border-divider flex items-center gap-3">
-          <div className="w-8 h-8 rounded bg-[#E9F1FF] flex items-center justify-center text-[#A855F7] text-sm">
-            G
+          <div className="w-8 h-8 rounded bg-red-500 flex items-center justify-center text-white text-sm">
+            <PublicIcon fontSize="small" />
           </div>
           {!collapsed && (
             <div className="flex-1">
@@ -196,20 +215,12 @@ const ActionFlow = () => {
         {/* Top header bar */}
         <div className="h-16 bg-white border-b border-divider flex items-center justify-between px-6">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded bg-primary-main/10 text-primary-main flex items-center justify-center">
-              <ViewListOutlinedIcon fontSize="small" />
+            <div className="w-8 h-8 rounded bg-green-500 text-white flex items-center justify-center">
+              <span className="text-sm font-bold">↑</span>
             </div>
             <h1 className="text-lg font-medium text-text-primary">Action flow</h1>
           </div>
           <div className="flex items-center gap-3">
-            {/* Create new project button (top-right +) */}
-            <button
-              className="flex items-center justify-center w-10 h-10 rounded-md border border-divider bg-white text-text-primary hover:bg-background-offsetWeak"
-              aria-label="Create project"
-              onClick={() => router.push('/action-flow/new')}
-            >
-              <AddIcon fontSize="small" />
-            </button>
             <NotificationsNoneOutlinedIcon className="text-text-secondary" />
             <div className="w-8 h-8 rounded-full bg-[#E9F1FF] text-[#A855F7] flex items-center justify-center text-xs font-semibold">
               AB
@@ -218,7 +229,7 @@ const ActionFlow = () => {
         </div>
 
         {/* Search + Add */}
-        <div className="px-6 pt-6 pb-4 flex items-center justify-between">
+        <div className="px-6 pt-6 pb-4 flex items-center justify-between  rounded-full">
           <TextField
             placeholder="Search flow"
             value={searchQuery}
@@ -229,30 +240,45 @@ const ActionFlow = () => {
               '& .MuiOutlinedInput-root': {
                 backgroundColor: '#FFFFFF',
                 height: 40,
-                '& fieldset': { borderColor: 'var(--divider)' },
-                '&:hover fieldset': { borderColor: 'var(--divider)' },
-                '&.Mui-focused fieldset': { borderColor: 'var(--primary-main)' },
+                borderRadius: '9999px', // Makes it pill-shaped
+                '& fieldset': {
+                  borderColor: '#E5E7EB',
+                  borderWidth: '1px',
+                },
+                '&:hover fieldset': {
+                  borderColor: '#E5E7EB',
+                },
+                '&.Mui-focused fieldset': {
+                  borderColor: '#E5E7EB',
+                },
               },
             }}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
-                  <SearchIcon className="text-text-secondary" fontSize="small" />
+                  <SearchIcon className="text-gray-400" fontSize="small" />
                 </InputAdornment>
               ),
             }}
           />
 
-          <span />
+          {/* Add button in correct position */}
+          <button
+            className="flex items-center justify-center w-[40px] h-[40px] rounded-md border border-green-500 hover:bg-green-600 transition-colors"
+            aria-label="Create project"
+            onClick={() => router.push('/action-flow/new')}
+          >
+            <AddIcon fontSize="small" className="text-green-500" />
+          </button>
         </div>
 
         {/* Table */}
         <div className="px-6 pb-8">
-          <div className="rounded-lg border border-divider overflow-hidden bg-white">
+          <div className="rounded-lg  overflow-hidden bg-white">
             {/* Header */}
             <div className="bg-background-offsetWeak border-b border-divider px-6 py-3 text-sm font-medium text-text-primary grid grid-cols-12">
-              <div className="col-span-6">Action flow name</div>
-              <div className="col-span-5"></div>
+              <div className="col-span-5">Action flow name</div>
+              <div className="col-span-6">Description</div>
               <div className="col-span-1 text-right">Action</div>
             </div>
 
@@ -265,7 +291,7 @@ const ActionFlow = () => {
                     i !== filtered.length - 1 ? 'border-b border-[#E5E7EB]' : ''
                   }`}
                 >
-                  <div className="col-span-6 text-text-primary">
+                  <div className="col-span-5 text-text-primary">
                     {editingId === w.id ? (
                       <input
                         autoFocus
@@ -277,23 +303,37 @@ const ActionFlow = () => {
                           if (e.key === 'Escape') setEditingId(null);
                         }}
                         className="w-full bg-transparent outline-none border border-[#D1D5DB] rounded px-2 py-1"
+                        aria-label="Edit workflow name"
                       />
                     ) : (
                       <span>{w.name}</span>
                     )}
                   </div>
-                  <div className="col-span-5 text-text-secondary">
-                    This flow deals specifically churn users and all their impacts.
+                  <div className="col-span-6 text-text-secondary">
+                    {editingId === w.id ? (
+                      <input
+                        value={tempDesc}
+                        onChange={(e) => setTempDesc(e.target.value)}
+                        onBlur={commitEdit}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') commitEdit();
+                          if (e.key === 'Escape') setEditingId(null);
+                        }}
+                        className="w-full bg-transparent outline-none border border-[#D1D5DB] rounded px-2 py-1"
+                        aria-label="Edit workflow description"
+                      />
+                    ) : (
+                      <span>{w.description}</span>
+                    )}
                   </div>
                   <div className="col-span-1 flex justify-end">
-                    <IconButton
-                      size="small"
-                      sx={{ color: 'var(--success-main)' }}
-                      onClick={() => startEdit(w.id, w.name)}
-                      aria-label="Edit name"
+                    <button
+                      className="w-6 h-6 flex items-center justify-center text-green-500 hover:text-green-600 transition-colors"
+                      onClick={() => startEdit(w.id, w.name, w.description)}
+                      aria-label="Edit row"
                     >
                       <EditIcon fontSize="small" />
-                    </IconButton>
+                    </button>
                   </div>
                 </div>
               ))}
