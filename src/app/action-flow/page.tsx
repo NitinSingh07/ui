@@ -20,47 +20,49 @@ import PeopleIcon from '@mui/icons-material/People';
 import ScheduleIcon from '@mui/icons-material/Schedule';
 import PublicIcon from '@mui/icons-material/Public';
 import { IconButton, InputAdornment, TextField } from '@mui/material';
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
 const ActionFlow = () => {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState('');
   const [collapsed, setCollapsed] = useState(false);
-  const initialWorkflows = useMemo(
-    () => [
-      {
-        id: 1,
-        name: 'Notification for influencers',
-        description: 'This flow deals specifically churn users and all their impacts.',
-      },
-      {
-        id: 2,
-        name: 'Influencer Engageme...',
-        description: 'This flow deals specifically churn users and all their impacts.',
-      },
-      {
-        id: 3,
-        name: 'Influencer Notification System',
-        description: 'This flow deals specifically churn users and all their impacts.',
-      },
-      {
-        id: 4,
-        name: 'Influencer Outreach Notification',
-        description: 'This flow deals specifically churn users and all their impacts.',
-      },
-      {
-        id: 5,
-        name: 'Influencer Collaboration Reminder',
-        description: 'This flow deals specifically churn users and all their impacts.',
-      },
-    ],
-    []
-  );
-  const [workflows, setWorkflows] = useState(initialWorkflows);
+  const [workflows, setWorkflows] = useState([]);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [tempName, setTempName] = useState('');
   const [tempDesc, setTempDesc] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
+  // Fetch workflows from localStorage
+  const fetchWorkflows = () => {
+    try {
+      const storedWorkflows = localStorage.getItem('workflows');
+      if (storedWorkflows) {
+        const data = JSON.parse(storedWorkflows);
+        setWorkflows(data);
+      } else {
+        // Initialize with empty array if no data exists
+        setWorkflows([]);
+      }
+    } catch (error) {
+      console.error('Error fetching workflows from localStorage:', error);
+      setWorkflows([]);
+    }
+  };
+
+  useEffect(() => {
+    fetchWorkflows();
+  }, []);
+
+  // Listen for storage events to refresh when new workflows are created
+  useEffect(() => {
+    const handleStorageChange = () => {
+      fetchWorkflows();
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+  }, []);
 
   const filtered = useMemo(() => {
     const q = searchQuery.trim().toLowerCase();
@@ -76,18 +78,36 @@ const ActionFlow = () => {
 
   const commitEdit = () => {
     if (editingId == null) return;
-    setWorkflows((prev) =>
-      prev.map((w) =>
+
+    setIsLoading(true);
+    try {
+      // Get current workflows from localStorage
+      const storedWorkflows = JSON.parse(localStorage.getItem('workflows') || '[]');
+
+      // Update the specific workflow
+      const updatedWorkflows = storedWorkflows.map((w) =>
         w.id === editingId
           ? {
               ...w,
               name: tempName.trim() || w.name,
               description: tempDesc.trim() || w.description,
+              updatedAt: new Date().toISOString(),
             }
           : w
-      )
-    );
-    setEditingId(null);
+      );
+
+      // Save back to localStorage
+      localStorage.setItem('workflows', JSON.stringify(updatedWorkflows));
+
+      // Update state
+      setWorkflows(updatedWorkflows);
+      setEditingId(null);
+    } catch (error) {
+      console.error('Error updating workflow:', error);
+      alert('Failed to update workflow. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (

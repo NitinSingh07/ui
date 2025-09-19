@@ -31,6 +31,72 @@ const NewActionFlowPage = () => {
     tag: '',
     notificationType: '',
   });
+  const [workflowNode, setWorkflowNode] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSaveHandler = async () => {
+    if (!handlerData.name.trim()) {
+      alert('Please enter a name for the handler');
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      // Get existing workflows from localStorage
+      const existingWorkflows = JSON.parse(localStorage.getItem('workflows') || '[]');
+
+      // Create new workflow
+      const newWorkflow = {
+        id: Date.now(), // Use timestamp as unique ID
+        name: handlerData.name,
+        description: handlerData.description,
+        tag: handlerData.tag,
+        notificationType: handlerData.notificationType,
+        type: 'handler',
+        status: 'draft',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
+
+      // Add to existing workflows
+      const updatedWorkflows = [...existingWorkflows, newWorkflow];
+
+      // Save to localStorage
+      localStorage.setItem('workflows', JSON.stringify(updatedWorkflows));
+
+      // Create workflow node for display
+      setWorkflowNode({
+        id: newWorkflow.id,
+        name: handlerData.name,
+        description: handlerData.description,
+        type: 'handler',
+        position: { x: 400, y: 200 }, // Center position
+      });
+
+      // Close the panel
+      setShowHandlerPanel(false);
+
+      // Reset form data
+      setHandlerData({
+        name: '',
+        description: '',
+        tag: '',
+        notificationType: '',
+      });
+
+      // Update the page title
+      document.title = handlerData.name || 'Untitled';
+
+      // Trigger refresh of the listing page
+      window.dispatchEvent(new Event('storage'));
+    } catch (error) {
+      console.error('Error saving workflow:', error);
+      alert('Failed to save workflow. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -40,7 +106,9 @@ const NewActionFlowPage = () => {
           <div className="w-8 h-8 rounded-full bg-[#E9F1FF] text-[#A855F7] flex items-center justify-center">
             <BoltIcon fontSize="small" />
           </div>
-          <h1 className="text-lg font-medium text-text-primary">Untitled</h1>
+          <h1 className="text-lg font-medium text-text-primary">
+            {workflowNode ? workflowNode.name : 'Untitled'}
+          </h1>
         </div>
         <div className="flex items-center gap-3">
           <button className="h-9 px-4  border border-[#389F7F] text-[#1D9D74] rounded-md flex items-center gap-2 hover:bg-[#F0F9F4] transition-colors">
@@ -134,13 +202,11 @@ const NewActionFlowPage = () => {
               {/* Save Button - Fixed at bottom right */}
               <div className="mt-auto flex  justify-end">
                 <button
-                  className="w-[81px] h-[40px] bg-[#1D9D74]  text-white rounded-md font-medium hover:bg-[#1a8a66] transition-colors"
-                  onClick={() => {
-                    console.log('Handler data saved:', handlerData);
-                    setShowHandlerPanel(false);
-                  }}
+                  className="w-[81px] h-[40px] bg-[#1D9D74]  text-white rounded-md font-medium hover:bg-[#1a8a66] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  onClick={handleSaveHandler}
+                  disabled={isLoading}
                 >
-                  Save
+                  {isLoading ? 'Saving...' : 'Save'}
                 </button>
               </div>
             </div>
@@ -205,17 +271,31 @@ const NewActionFlowPage = () => {
             </button>
           </div>
 
-          {/* Center start button */}
+          {/* Center content - either start button or workflow node */}
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className="text-center">
-              <button
-                className="px-6 py-3 rounded-lg bg-[#2F2F2F] text-white text-sm font-medium shadow-lg hover:bg-[#404040] transition-colors flex items-center gap-2"
-                onClick={() => setShowHandlerPanel(true)}
-              >
-                <BoltIcon fontSize="small" />
-                Click to start
-              </button>
-            </div>
+            {workflowNode ? (
+              <div className="text-center">
+                {/* Workflow Node Card */}
+                <div className="bg-white rounded border-l-2 border-l-[#BBBBBB] h-[54px] w-[200px] p-[10px] flex items-center gap-[10px] shadow-lg">
+                  <div className="flex flex-col text-left min-w-0 flex-1">
+                    <h3 className="text-sm font-medium text-gray-900 truncate">
+                      {workflowNode.name}
+                    </h3>
+                    <p className="text-xs text-gray-500 truncate">{workflowNode.description}</p>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="text-center">
+                <button
+                  className="px-6 py-3 rounded-lg bg-[#2F2F2F] text-white text-sm font-medium shadow-lg hover:bg-[#404040] transition-colors flex items-center gap-2"
+                  onClick={() => setShowHandlerPanel(true)}
+                >
+                  <BoltIcon fontSize="small" />
+                  Click to start
+                </button>
+              </div>
+            )}
           </div>
 
           {/* Bottom toolbar */}
