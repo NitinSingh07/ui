@@ -161,12 +161,30 @@ const NewActionFlowPage = () => {
           </h1>
         </div>
         <div className="flex items-center gap-3">
-          <button className="h-9 px-4  border border-[#389F7F] text-[#1D9D74] rounded-md flex items-center gap-2 hover:bg-[#F0F9F4] transition-colors">
+          <button
+            className={`h-9 px-4 border rounded-md flex items-center gap-2 transition-all duration-300 ${
+              recipientsNode
+                ? 'border-[#389F7F] text-[#1D9D74] bg-white hover:bg-[#F0F9F4]'
+                : 'border-[#389F7F] text-[#1D9D74] hover:bg-[#F0F9F4]'
+            }`}
+          >
             <SaveIcon fontSize="small" />
-            Save
+            {recipientsNode ? 'Edit' : 'Save'}
           </button>
-          <button className="h-9 px-4 rounded-md bg-[#E5E7EB] text-[#9CA3AF] flex items-center gap-2 cursor-not-allowed">
-            <SendIcon fontSize="small" />
+          <button
+            className={`h-9 px-4 rounded-md flex items-center gap-2 transition-all duration-300 ${
+              recipientsNode
+                ? 'bg-[#1D9D74] text-white hover:bg-[#1a8a66] cursor-pointer transform hover:scale-105'
+                : 'bg-[#E5E7EB] text-[#9CA3AF] cursor-not-allowed'
+            }`}
+            disabled={!recipientsNode}
+          >
+            <SendIcon
+              fontSize="small"
+              className={`transition-transform duration-300 ${
+                recipientsNode ? 'transform -rotate-12' : ''
+              }`}
+            />
             Publish
           </button>
         </div>
@@ -205,9 +223,7 @@ const NewActionFlowPage = () => {
 
                 {/* Description Field */}
                 <div>
-                  <label className="block text-sm font-medium text-black mb-2">
-                    Description
-                  </label>
+                  <label className="block text-sm font-medium text-black mb-2">Description</label>
                   <input
                     type="text"
                     placeholder="Enter description"
