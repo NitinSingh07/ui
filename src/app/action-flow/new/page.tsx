@@ -21,6 +21,7 @@ import AccountTreeOutlinedIcon from '@mui/icons-material/AccountTreeOutlined';
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import RecipientsPanel from './components/RecipientsPanel';
+import ConditionPanel from './components/ConditionPanel';
 import WorkflowNode from './components/WorkflowNode';
 
 const NewActionFlowPage = () => {
@@ -34,7 +35,9 @@ const NewActionFlowPage = () => {
   });
   const [workflowNode, setWorkflowNode] = useState<any>(null);
   const [recipientsNode, setRecipientsNode] = useState<any>(null);
+  const [conditionNode, setConditionNode] = useState<any>(null);
   const [showRecipientsPanel, setShowRecipientsPanel] = useState(false);
+  const [showConditionPanel, setShowConditionPanel] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSaveHandler = async () => {
@@ -124,6 +127,29 @@ const NewActionFlowPage = () => {
     }
   };
 
+  const handleSaveCondition = (data: any) => {
+    // Create condition node
+    setConditionNode({
+      id: Date.now() + 2,
+      name: 'Condition',
+      description: `if ${data.dataProperty}== ${data.value}`,
+      type: 'condition',
+      position: { x: 0, y: 0 },
+      conditionData: data,
+    });
+  };
+
+  const handleConditionDataChange = (data: any) => {
+    // Update condition node in real-time
+    if (conditionNode) {
+      setConditionNode({
+        ...conditionNode,
+        description: `if ${data.dataProperty}== ${data.value}`,
+        conditionData: data,
+      });
+    }
+  };
+
   const handleStorageIconClick = () => {
     if (workflowNode) {
       // Create initial recipients node when panel opens
@@ -143,6 +169,30 @@ const NewActionFlowPage = () => {
         });
       }
       setShowRecipientsPanel(true);
+    } else {
+      alert('Please create a handler first by clicking "Click to start"');
+    }
+  };
+
+  const handleConditionIconClick = () => {
+    if (workflowNode) {
+      // Create initial condition node when panel opens
+      if (!conditionNode) {
+        setConditionNode({
+          id: Date.now() + 2,
+          name: 'Condition',
+          description: 'if Usertype== influencer',
+          type: 'condition',
+          position: { x: 0, y: 0 },
+          conditionData: {
+            conditionName: 'Instagram',
+            dataProperty: 'Usertype',
+            operator: 'Is equal to',
+            value: 'Influencer',
+          },
+        });
+      }
+      setShowConditionPanel(true);
     } else {
       alert('Please create a handler first by clicking "Click to start"');
     }
@@ -198,6 +248,14 @@ const NewActionFlowPage = () => {
           onClose={() => setShowRecipientsPanel(false)}
           onSave={handleSaveRecipients}
           onDataChange={handleRecipientsDataChange}
+        />
+
+        {/* Condition Panel - Overlay */}
+        <ConditionPanel
+          isOpen={showConditionPanel}
+          onClose={() => setShowConditionPanel(false)}
+          onSave={handleSaveCondition}
+          onDataChange={handleConditionDataChange}
         />
 
         {/* Left Handler Panel - Overlay */}
@@ -312,6 +370,7 @@ const NewActionFlowPage = () => {
             <button
               className="w-8 h-8 bg-background-offsetWeak rounded-md flex items-center justify-center hover:bg-background-offsetWeak/80 transition-colors"
               title="Add Conditions"
+              onClick={handleConditionIconClick}
             >
               <AccountTreeIcon fontSize="small" className="text-text-secondary" />
             </button>
@@ -398,6 +457,21 @@ const NewActionFlowPage = () => {
                     type="recipients"
                     position={{ x: 0, y: 0 }}
                     recipientsData={recipientsNode.recipientsData}
+                  />
+                )}
+
+                {/* Connection Line */}
+                {conditionNode && <div className="w-[2px] h-[46px] bg-gray-300"></div>}
+
+                {/* Condition Node */}
+                {conditionNode && (
+                  <WorkflowNode
+                    id={conditionNode.id}
+                    name={conditionNode.name}
+                    description={conditionNode.description}
+                    type="condition"
+                    position={{ x: 0, y: 0 }}
+                    conditionData={conditionNode.conditionData}
                   />
                 )}
               </div>

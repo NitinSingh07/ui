@@ -4,17 +4,24 @@ import React from 'react';
 import BoltIcon from '@mui/icons-material/Bolt';
 import EmailIcon from '@mui/icons-material/Email';
 import StorageIcon from '@mui/icons-material/Storage';
+import AccountTreeIcon from '@mui/icons-material/AccountTree';
 
 interface WorkflowNodeProps {
   id: string;
   name: string;
   description: string;
-  type: 'handler' | 'recipients';
+  type: 'handler' | 'recipients' | 'condition';
   position: { x: number; y: number };
   recipientsData?: {
     customerPool: string;
     recipientType: string;
     selectedAudience: string;
+  };
+  conditionData?: {
+    conditionName: string;
+    dataProperty: string;
+    operator: string;
+    value: string;
   };
 }
 
@@ -25,6 +32,7 @@ const WorkflowNode: React.FC<WorkflowNodeProps> = ({
   type,
   position,
   recipientsData,
+  conditionData,
 }) => {
   const getIcon = () => {
     switch (type) {
@@ -32,6 +40,8 @@ const WorkflowNode: React.FC<WorkflowNodeProps> = ({
         return <BoltIcon fontSize="small" />;
       case 'recipients':
         return <EmailIcon fontSize="small" />;
+      case 'condition':
+        return <AccountTreeIcon fontSize="small" />;
       default:
         return <StorageIcon fontSize="small" />;
     }
@@ -47,14 +57,20 @@ const WorkflowNode: React.FC<WorkflowNodeProps> = ({
         return 'No recipient selected';
       }
     }
+    if (type === 'condition' && conditionData) {
+      return `if ${conditionData.dataProperty}== ${conditionData.value}`;
+    }
     return description;
   };
 
   const getBorderColor = () => {
-    return type === 'recipients' ? 'border-l-green-500' : 'border-l-[#BBBBBB]';
+    if (type === 'recipients') return 'border-l-green-500';
+    if (type === 'condition') return 'border-l-blue-500';
+    return 'border-l-[#BBBBBB]';
   };
 
-  const borderColor = type === 'recipients' ? '#10B981' : '#BBBBBB';
+  const borderColor =
+    type === 'recipients' ? '#10B981' : type === 'condition' ? '#3B82F6' : '#BBBBBB';
 
   return (
     <div
