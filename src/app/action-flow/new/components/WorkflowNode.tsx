@@ -39,7 +39,13 @@ const WorkflowNode: React.FC<WorkflowNodeProps> = ({
 
   const getDescription = () => {
     if (type === 'recipients' && recipientsData) {
-      return `You are using ${recipientsData.selectedAudience} cohort from ${recipientsData.customerPool} pool.`;
+      if (recipientsData.selectedAudience && recipientsData.customerPool) {
+        return `You are using ${recipientsData.selectedAudience} ${recipientsData.recipientType} from ${recipientsData.customerPool} pool.`;
+      } else if (recipientsData.customerPool) {
+        return `You are using ${recipientsData.recipientType} from ${recipientsData.customerPool} pool.`;
+      } else {
+        return 'No recipient selected';
+      }
     }
     return description;
   };
