@@ -184,21 +184,19 @@ const NewActionFlowPage = () => {
 
         {/* Left Handler Panel - Overlay */}
         {showHandlerPanel && (
-          <div className="absolute left-[14px]  w-[380px] h-[680px] bg-[#FFFFFF] rounded-xl flex flex-col z-20 ">
+          <div className="absolute left-[14px] top-[8px] w-[380px] h-[680px] bg-white rounded-xl shadow-lg flex flex-col z-20 overflow-hidden">
             <div className="pt-[24px] pb-[24px] pl-[12px] pr-[12px] flex-1 flex flex-col">
-              <h2 className="text-lg font-semibold text-text-primary mb-6">
-                Enter Handler details
-              </h2>
+              <h2 className="text-lg font-semibold text-black mb-6">Enter Handler details</h2>
 
               <div className="space-y-6 flex-1">
                 {/* Name Field */}
                 <div>
-                  <label className="block text-sm font-medium text-text-primary mb-2">
+                  <label className="block text-sm font-medium text-black mb-2">
                     Name <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="text"
-                    placeholder="Select"
+                    placeholder="Enter handler name"
                     value={handlerData.name}
                     onChange={(e) => setHandlerData((prev) => ({ ...prev, name: e.target.value }))}
                     className="w-full h-10 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -207,12 +205,12 @@ const NewActionFlowPage = () => {
 
                 {/* Description Field */}
                 <div>
-                  <label className="block text-sm font-medium text-text-primary mb-2">
+                  <label className="block text-sm font-medium text-black mb-2">
                     Description
                   </label>
                   <input
                     type="text"
-                    placeholder="Select"
+                    placeholder="Enter description"
                     value={handlerData.description}
                     onChange={(e) =>
                       setHandlerData((prev) => ({ ...prev, description: e.target.value }))
@@ -223,7 +221,7 @@ const NewActionFlowPage = () => {
 
                 {/* Tag Field */}
                 <div>
-                  <label className="block text-sm font-medium text-text-primary mb-2">Tag</label>
+                  <label className="block text-sm font-medium text-black mb-2">Tag</label>
                   <select
                     value={handlerData.tag}
                     onChange={(e) => setHandlerData((prev) => ({ ...prev, tag: e.target.value }))}
@@ -239,7 +237,7 @@ const NewActionFlowPage = () => {
 
                 {/* Notification Type Field */}
                 <div>
-                  <label className="block text-sm font-medium text-text-primary mb-2">
+                  <label className="block text-sm font-medium text-black mb-2">
                     Notification type
                   </label>
                   <select
@@ -276,7 +274,7 @@ const NewActionFlowPage = () => {
         {/* Backdrop/Overlay - Only behind handler panel */}
         {showHandlerPanel && (
           <div
-            className="absolute left-[14px] top-[85px] w-[380px] h-[680px] bg-black bg-opacity-20 z-[5] rounded-xl"
+            className="absolute left-[14px] top-[8px] w-[380px] h-[680px] bg-black bg-opacity-20 z-[5] rounded-xl"
             onClick={() => setShowHandlerPanel(false)}
           />
         )}
