@@ -402,7 +402,7 @@ const GoJSWorkflow: React.FC<GoJSWorkflowProps> = ({
 
     // Add floating text labels after diagram is rendered
     diagram.addDiagramListener('InitialLayoutCompleted', () => {
-      if (conditionSaved && conditionNode) {
+      if (conditionSaved && conditionNode && conditionKey) {
         const conditionNodeObj = diagram.findNodeForKey(conditionKey);
         if (conditionNodeObj) {
           const conditionPos = conditionNodeObj.location;

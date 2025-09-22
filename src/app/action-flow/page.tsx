@@ -21,11 +21,19 @@ import { InputAdornment, TextField } from '@mui/material';
 import React, { useMemo, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
+interface Workflow {
+  id: number;
+  name: string;
+  description: string;
+  createdAt: string;
+  updatedAt?: string;
+}
+
 const ActionFlow = () => {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState('');
   const [collapsed, setCollapsed] = useState(false);
-  const [workflows, setWorkflows] = useState([]);
+  const [workflows, setWorkflows] = useState<Workflow[]>([]);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [tempName, setTempName] = useState('');
   const [tempDesc, setTempDesc] = useState('');
@@ -83,7 +91,7 @@ const ActionFlow = () => {
       const storedWorkflows = JSON.parse(localStorage.getItem('workflows') || '[]');
 
       // Update the specific workflow
-      const updatedWorkflows = storedWorkflows.map((w) =>
+      const updatedWorkflows = storedWorkflows.map((w: Workflow) =>
         w.id === editingId
           ? {
               ...w,
