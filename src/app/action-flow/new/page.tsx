@@ -1,6 +1,5 @@
 'use client';
 
-import BoltIcon from '@mui/icons-material/Bolt';
 import SaveIcon from '@mui/icons-material/Save';
 import SendIcon from '@mui/icons-material/Send';
 import AddIcon from '@mui/icons-material/Add';
@@ -22,8 +21,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import RecipientsPanel from './components/RecipientsPanel';
 import ConditionPanel from './components/ConditionPanel';
-import ConditionBranch from './components/ConditionBranch';
-import WorkflowNode from './components/WorkflowNode';
+import GoJSWorkflow from './components/GoJSWorkflow';
 
 const NewActionFlowPage = () => {
   const router = useRouter();
@@ -42,6 +40,7 @@ const NewActionFlowPage = () => {
   const [showRecipientsPanel, setShowRecipientsPanel] = useState(false);
   const [showConditionPanel, setShowConditionPanel] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [conditionSaved, setConditionSaved] = useState(false);
 
   const handleSaveHandler = async () => {
     if (!handlerData.name.trim()) {
@@ -140,6 +139,15 @@ const NewActionFlowPage = () => {
       position: { x: 0, y: 0 },
       conditionData: data,
     });
+
+    // Mark condition as saved to show True/False branches
+    setConditionSaved(true);
+
+    // Automatically create true/false branches after saving condition
+    setTimeout(() => {
+      handleTrueBranchClick();
+      handleFalseBranchClick();
+    }, 100);
   };
 
   const handleConditionDataChange = (data: any) => {
@@ -151,6 +159,8 @@ const NewActionFlowPage = () => {
         conditionData: data,
       });
     }
+    // Reset condition saved state when data changes
+    setConditionSaved(false);
   };
 
   const handleFalseBranchClick = () => {
@@ -493,188 +503,21 @@ const NewActionFlowPage = () => {
             </button>
           </div>
 
-          {/* Center content - either start button or workflow nodes */}
-          <div className="absolute inset-0 flex items-center justify-center">
+          {/* Center content - either start button or GoJS workflow */}
+          <div className="absolute inset-0">
             {workflowNode ? (
-              <div className="flex flex-col items-center gap-4 min-h-screen w-full pt-20 pb-20">
-                {/* Handler Node */}
-                <WorkflowNode
-                  id={workflowNode.id}
-                  name={workflowNode.name}
-                  description={workflowNode.description}
-                  type="handler"
-                  position={{ x: 0, y: 0 }}
-                />
-
-                {/* Connection Line */}
-                {recipientsNode && <div className="w-[2px] h-[46px] bg-gray-300"></div>}
-
-                {/* Recipients Node */}
-                {recipientsNode && (
-                  <WorkflowNode
-                    id={recipientsNode.id}
-                    name={recipientsNode.name}
-                    description={recipientsNode.description}
-                    type="recipients"
-                    position={{ x: 0, y: 0 }}
-                    recipientsData={recipientsNode.recipientsData}
-                  />
-                )}
-
-                {/* Connection Line */}
-                {conditionNode && <div className="w-[2px] h-[46px] bg-gray-300"></div>}
-
-                {/* Condition Node */}
-                {conditionNode && (
-                  <div className="flex flex-col items-center">
-                    <WorkflowNode
-                      id={conditionNode.id}
-                      name={conditionNode.name}
-                      description={conditionNode.description}
-                      type="condition"
-                      position={{ x: 0, y: 0 }}
-                      conditionData={conditionNode.conditionData}
-                    />
-
-                    {/* True/False Branches with curvy arrows */}
-                    <ConditionBranch
-                      onFalseClick={handleFalseBranchClick}
-                      onTrueClick={handleTrueBranchClick}
-                      showButtons={falseBranchNodes.length === 0 || trueBranchNodes.length === 0}
-                    />
-
-                    <div className="flex items-start gap-32 mt-4">
-                      {/* False Branch Side */}
-                      <div className="flex flex-col items-center">
-                        {/* False Branch Flow */}
-                        {falseBranchNodes.length > 0 && (
-                          <div className="flex flex-col items-center">
-                            {/* Connection line */}
-                            <div className="w-[2px] h-[46px] bg-gray-300"></div>
-
-                            {/* Channel Node */}
-                            <WorkflowNode
-                              id={falseBranchNodes[0].id}
-                              name={falseBranchNodes[0].name}
-                              description={falseBranchNodes[0].description}
-                              type={falseBranchNodes[0].type}
-                              position={{ x: 0, y: 0 }}
-                            />
-
-                            {/* Three sub-branches from Channel: Push, Email, WhatsApp */}
-                            <div className="flex items-center gap-12 mt-4">
-                              {/* Left - Push */}
-                              <div className="flex flex-col items-center">
-                                <div className="w-[2px] h-[46px] bg-gray-300"></div>
-                                <WorkflowNode
-                                  id={`push-${Date.now()}`}
-                                  name="Push"
-                                  description="Send via APNs"
-                                  type="push"
-                                  position={{ x: 0, y: 0 }}
-                                />
-                              </div>
-
-                              {/* Middle - Email with API below */}
-                              <div className="flex flex-col items-center">
-                                <div className="w-[2px] h-[46px] bg-gray-300"></div>
-                                <WorkflowNode
-                                  id={`email-${Date.now()}`}
-                                  name="Email"
-                                  description="Send via Sendgrid."
-                                  type="email"
-                                  position={{ x: 0, y: 0 }}
-                                />
-                                {/* API request under Email */}
-                                <div className="flex flex-col items-center mt-4">
-                                  <div className="w-[2px] h-[46px] bg-gray-300"></div>
-                                  <WorkflowNode
-                                    id={`api-${Date.now()}`}
-                                    name="API request"
-                                    description="GET https://www.example.com"
-                                    type="api"
-                                    position={{ x: 0, y: 0 }}
-                                  />
-                                </div>
-                              </div>
-
-                              {/* Right - WhatsApp */}
-                              <div className="flex flex-col items-center">
-                                <div className="w-[2px] h-[46px] bg-gray-300"></div>
-                                <WorkflowNode
-                                  id={`whatsapp-${Date.now()}`}
-                                  name="Whatsapp"
-                                  description="Send via One Signal"
-                                  type="whatsapp"
-                                  position={{ x: 0, y: 0 }}
-                                />
-                              </div>
-                            </div>
-                          </div>
-                        )}
-                      </div>
-
-                      {/* True Branch Side */}
-                      <div className="flex flex-col items-center">
-                        {/* True Branch Flow - Digest → In app → Delay → Rewards */}
-                        {trueBranchNodes.length > 0 && (
-                          <div className="flex flex-col items-center">
-                            {/* Connection line */}
-                            <div className="w-[2px] h-[46px] bg-gray-300"></div>
-
-                            {/* Digest Node */}
-                            <WorkflowNode
-                              id={trueBranchNodes[0].id}
-                              name={trueBranchNodes[0].name}
-                              description={trueBranchNodes[0].description}
-                              type={trueBranchNodes[0].type}
-                              position={{ x: 0, y: 0 }}
-                            />
-
-                            {/* In app Node */}
-                            <div className="flex flex-col items-center mt-4">
-                              <div className="w-[2px] h-[46px] bg-gray-300"></div>
-                              <WorkflowNode
-                                id={`inapp-${Date.now()}`}
-                                name="In app"
-                                description="Send via DOKAAI In app"
-                                type="inapp"
-                                position={{ x: 0, y: 0 }}
-                              />
-
-                              {/* Delay Node */}
-                              <div className="flex flex-col items-center mt-4">
-                                <div className="w-[2px] h-[46px] bg-gray-300"></div>
-                                <WorkflowNode
-                                  id={`delay-${Date.now()}`}
-                                  name="Delay"
-                                  description="wait for 30 min"
-                                  type="delay"
-                                  position={{ x: 0, y: 0 }}
-                                />
-
-                                {/* Rewards Node */}
-                                <div className="flex flex-col items-center mt-4">
-                                  <div className="w-[2px] h-[46px] bg-gray-300"></div>
-                                  <WorkflowNode
-                                    id={`rewards-${Date.now()}`}
-                                    name="Rewards node"
-                                    description="#733373737"
-                                    type="rewards"
-                                    position={{ x: 0, y: 0 }}
-                                  />
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
+              <GoJSWorkflow
+                workflowNode={workflowNode}
+                recipientsNode={recipientsNode}
+                conditionNode={conditionNode}
+                falseBranchNodes={falseBranchNodes}
+                trueBranchNodes={trueBranchNodes}
+                conditionSaved={conditionSaved}
+                onFalseBranchClick={handleFalseBranchClick}
+                onTrueBranchClick={handleTrueBranchClick}
+              />
             ) : (
-              <div className="flex items-center justify-center">
+              <div className="flex items-center justify-center h-full">
                 <button
                   className={`w-[172px] h-[48px] rounded-[6px] text-white text-sm font-medium shadow-lg transition-colors flex items-center justify-center gap-[10px] border-[4px] border-[#1F1F1F]/20 px-[24px] py-[10px] ${
                     showHandlerPanel
