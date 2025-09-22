@@ -2,24 +2,21 @@
 
 import AddIcon from '@mui/icons-material/Add';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
 import EditIcon from '@mui/icons-material/Edit';
-import GroupOutlinedIcon from '@mui/icons-material/GroupOutlined';
-import ListAltOutlinedIcon from '@mui/icons-material/ListAltOutlined';
 import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined';
 import SearchIcon from '@mui/icons-material/Search';
-import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import ViewListOutlinedIcon from '@mui/icons-material/ViewListOutlined';
-import AppsIcon from '@mui/icons-material/Apps';
-import TuneIcon from '@mui/icons-material/Tune';
-import PersonIcon from '@mui/icons-material/Person';
-import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
-import GpsFixedIcon from '@mui/icons-material/GpsFixed';
-import DescriptionIcon from '@mui/icons-material/Description';
-import PeopleIcon from '@mui/icons-material/People';
-import ScheduleIcon from '@mui/icons-material/Schedule';
-import PublicIcon from '@mui/icons-material/Public';
-import { IconButton, InputAdornment, TextField } from '@mui/material';
+import HomeIcon from '@mui/icons-material/Home';
+import GridViewIcon from '@mui/icons-material/GridView';
+import SettingsIcon from '@mui/icons-material/Settings';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import EventIcon from '@mui/icons-material/Event';
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import ArticleIcon from '@mui/icons-material/Article';
+import GroupIcon from '@mui/icons-material/Group';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import LanguageIcon from '@mui/icons-material/Language';
+import {  InputAdornment, TextField } from '@mui/material';
 import React, { useMemo, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
@@ -119,7 +116,7 @@ const ActionFlow = () => {
         <div>
           {/* Top brand and back */}
           <div className="h-16 flex items-center gap-3 px-4 ">
-            <div className="w-8 h-8 rounded bg-primary-main/10\\ text-primary-main flex items-center justify-center">
+            <div className="w-8 h-8 rounded bg-primary-main/10 text-primary-main flex items-center justify-center">
               <ViewListOutlinedIcon fontSize="small" />
             </div>
             <button
@@ -147,25 +144,25 @@ const ActionFlow = () => {
           <nav className="mt-2   text-sm">
             <div className="px-2 py-1">
               <a className="flex items-center gap-3 px-3 py-2 rounded hover:bg-background-offsetWeak cursor-pointer text-text-primary">
-                <DashboardOutlinedIcon fontSize="small" className="text-text-secondary" />
+                <HomeIcon fontSize="small" className="text-text-secondary" />
                 {!collapsed && <span>Dashboard</span>}
               </a>
             </div>
             <div className="px-2 py-1">
               <a className="flex items-center gap-3 px-3 py-2 rounded hover:bg-background-offsetWeak cursor-pointer text-text-primary">
-                <AppsIcon fontSize="small" className="text-text-secondary" />
+                <GridViewIcon fontSize="small" className="text-text-secondary" />
                 {!collapsed && <span>Services</span>}
               </a>
             </div>
             <div className="px-2 py-1">
               <a className="flex items-center gap-3 px-3 py-2 rounded hover:bg-background-offsetWeak cursor-pointer text-text-primary">
-                <TuneIcon fontSize="small" className="text-text-secondary" />
+                <SettingsIcon fontSize="small" className="text-text-secondary" />
                 {!collapsed && <span>Configurations</span>}
               </a>
             </div>
             <div className="px-2 py-1">
               <a className="flex items-center gap-3 px-3 py-2 rounded hover:bg-background-offsetWeak cursor-pointer text-text-primary">
-                <PersonIcon fontSize="small" className="text-text-secondary" />
+                <PersonAddIcon fontSize="small" className="text-text-secondary" />
                 {!collapsed && <span>Members</span>}
               </a>
             </div>
@@ -177,39 +174,39 @@ const ActionFlow = () => {
 
             <div className="px-2 py-1">
               <a className="flex items-center gap-3 px-3 py-2 rounded hover:bg-background-offsetWeak cursor-pointer text-text-primary">
-                <CalendarTodayIcon fontSize="small" className="text-text-secondary" />
+                <EventIcon fontSize="small" className="text-text-secondary" />
                 {!collapsed && <span>Notification Handler</span>}
               </a>
             </div>
 
             <div className="px-2 py-1">
               <a className="flex items-center gap-3 px-3 py-2 rounded cursor-pointer bg-[#E6F4F1] text-[#1D9D74]">
-                <AppsIcon fontSize="small" />
+                <MoreHorizIcon fontSize="small" />
                 {!collapsed && <span>Action flow</span>}
               </a>
             </div>
 
             <div className="px-2 py-1">
               <a className="flex items-center gap-3 px-3 py-2 rounded hover:bg-background-offsetWeak cursor-pointer text-text-primary">
-                <GpsFixedIcon fontSize="small" className="text-text-secondary" />
+                <GroupIcon fontSize="small" className="text-text-secondary" />
                 {!collapsed && <span>Groups</span>}
               </a>
             </div>
             <div className="px-2 py-1">
               <a className="flex items-center gap-3 px-3 py-2 rounded hover:bg-background-offsetWeak cursor-pointer text-text-primary">
-                <DescriptionIcon fontSize="small" className="text-text-secondary" />
+                <ArticleIcon fontSize="small" className="text-text-secondary" />
                 {!collapsed && <span>Templates</span>}
               </a>
             </div>
             <div className="px-2 py-1">
               <a className="flex items-center gap-3 px-3 py-2 rounded hover:bg-background-offsetWeak cursor-pointer text-text-primary">
-                <PeopleIcon fontSize="small" className="text-text-secondary" />
+                <GroupIcon fontSize="small" className="text-text-secondary" />
                 {!collapsed && <span>Customers</span>}
               </a>
             </div>
             <div className="px-2 py-1">
               <a className="flex items-center gap-3 px-3 py-2 rounded hover:bg-background-offsetWeak cursor-pointer text-text-primary">
-                <ScheduleIcon fontSize="small" className="text-text-secondary" />
+                <AccessTimeIcon fontSize="small" className="text-text-secondary" />
                 {!collapsed && <span>Logs</span>}
               </a>
             </div>
@@ -219,7 +216,7 @@ const ActionFlow = () => {
         {/* Bottom org selector */}
         <div className="px-4 py-3  flex items-center gap-3">
           <div className="w-8 h-8 rounded bg-red-500 flex items-center justify-center text-white text-sm">
-            <PublicIcon fontSize="small" />
+            <LanguageIcon fontSize="small" />
           </div>
           {!collapsed && (
             <div className="flex-1">

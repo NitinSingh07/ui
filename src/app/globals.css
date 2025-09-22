@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -66,7 +66,7 @@ body {
   .title3Medium {
     @apply text-[18px] font-medium leading-5 !important;
   }
-  .title3Semibold{
+  .title3Semibold {
     @apply text-[18px] font-semibold leading-6 !important;
   }
   .title4Bold {
@@ -116,9 +116,10 @@ body {
 @layer base {
   /* default theme */
   :root {
-    --font-mono: ui-monospace, Menlo, Monaco, "Cascadia Mono", "Segoe UI Mono",
-      "Roboto Mono", "Oxygen Mono", "Ubuntu Monospace", "Source Code Pro",
-      "Fira Mono", "Droid Sans Mono", "Courier New", monospace;
+    --font-mono:
+      ui-monospace, Menlo, Monaco, 'Cascadia Mono', 'Segoe UI Mono', 'Roboto Mono', 'Oxygen Mono',
+      'Ubuntu Monospace', 'Source Code Pro', 'Fira Mono', 'Droid Sans Mono', 'Courier New',
+      monospace;
 
     /*
       - gray/natural colors for texts, borders and disabled elements.
@@ -221,15 +222,13 @@ body {
     --background-paper: #f4f4f4;
     --background-offset-weak: #fafafa;
     --background-offset-extra-weak: #fcfcfc;
-    --background-offset-strong: #ECECEC;
+    --background-offset-strong: #ececec;
     --background-gradient: linear-gradient(to right, #dd6580, #ee7368);
     --background-disabled: #dedede;
     --background-primary-weak: #e2f3ef;
     --background-inprogress: #fff3e0;
     --background-failed: #ffebee;
-    --background-positive-weak: #E8F5E9;
-;
-
+    --background-positive-weak: #e8f5e9;
     /* ----------------------------------- */
     /*action colors*/
     /* ----------------------------------- */
@@ -259,14 +258,14 @@ body {
     --color-10: #eb5757;
     --color-11: #223368;
     --color-12: #2f81ed;
-    --color-13: #E3EEFC;
-    --color-14: #F8F9FA;
-    --color-15: #F9F1D2;
-    --color-16: #FCFCFC;
+    --color-13: #e3eefc;
+    --color-14: #f8f9fa;
+    --color-15: #f9f1d2;
+    --color-16: #fcfcfc;
   }
 
   /* dark theme */
-  [data-theme="dark"] {
+  [data-theme='dark'] {
     /*
       - gray/natural color shades for texts, borders and disabled elements.
       - If required we can use as background too.
@@ -336,9 +335,9 @@ body {
     /* ----------------------------------- */
     /* green/success colors */
     /* ----------------------------------- */
-    --green-main: 56 159 127;   /* #389f7f */
-    --green-light:95 184 154;     /* #5fb89a */
-    --green-dark: 45 122 99;    /* #2d7a63 (optional) *
+    --green-main: 56 159 127; /* #389f7f */
+    --green-light: 95 184 154; /* #5fb89a */
+    --green-dark: 45 122 99; /* #2d7a63 (optional) *
 
     /* here you can customize other colors for dark theme if design required */
   }
@@ -365,16 +364,16 @@ body {
     @apply hidden;
   }
 
-  input[type="search"]::-webkit-search-cancel-button {
+  input[type='search']::-webkit-search-cancel-button {
     @apply hidden;
   }
 
-  input[type="number"]::-webkit-inner-spin-button,
-  input[type="number"]::-webkit-outer-spin-button {
+  input[type='number']::-webkit-inner-spin-button,
+  input[type='number']::-webkit-outer-spin-button {
     @apply m-0 appearance-none;
   }
 
-  input[type="checkbox"]:checked {
+  input[type='checkbox']:checked {
     @apply bg-none;
   }
 
@@ -456,7 +455,9 @@ body {
 
   /* experimental */
   .card-shadow {
-    box-shadow: 0px 1px 0 rgba(0, 0, 0, 0.02), 0px 2px 6px rgba(0, 0, 0, 0.05);
+    box-shadow:
+      0px 1px 0 rgba(0, 0, 0, 0.02),
+      0px 2px 6px rgba(0, 0, 0, 0.05);
   }
 }
 
@@ -672,11 +673,11 @@ select:-webkit-autofill:focus {
   align-items: center;
 }
 
-.custom-radio-container input[type="radio"] {
+.custom-radio-container input[type='radio'] {
   appearance: none; /* Remove default radio button styling */
   width: 18px;
   height: 18px;
-  border: 2px solid #389F7F;
+  border: 2px solid #389f7f;
   border-radius: 50%; /* Make it circular */
   outline: none;
   cursor: pointer;
@@ -684,11 +685,11 @@ select:-webkit-autofill:focus {
   margin-right: 10px;
 }
 
-.custom-radio-container input[type="radio"]:checked::before {
+.custom-radio-container input[type='radio']:checked::before {
   content: '';
   width: 10px;
   height: 10px;
-  background-color: #389F7F;
+  background-color: #389f7f;
   border-radius: 50%;
   position: absolute;
   top: 50%;
@@ -699,7 +700,6 @@ select:-webkit-autofill:focus {
 .custom-radio-container label {
   font-weight: bold;
   font-size: 14px;
-  color: #1F1F1F;
+  color: #1f1f1f;
   margin-right: 20px;
 }
-
