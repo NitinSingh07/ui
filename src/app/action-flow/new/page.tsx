@@ -288,85 +288,95 @@ const NewActionFlowPage = () => {
         {/* Left Handler Panel - Overlay */}
         {showHandlerPanel && (
           <div className="fixed left-[14px] top-[85px] w-[380px] h-[681px] bg-white rounded-[12px] shadow-lg flex flex-col z-20">
-            <div className="pt-[24px] pr-[12px] pb-[24px] pl-[12px] flex flex-col h-full">
-              <h2 className="text-lg font-semibold text-black mb-6">Enter Handler details</h2>
+            <div className="flex flex-col h-full">
+              {/* Header */}
+              <div className="pt-[24px] pr-[12px] pl-[12px] pb-[16px]">
+                <h2 className="text-lg font-semibold text-black">Enter Handler details</h2>
+              </div>
 
-              <div className="space-y-6 flex-1 overflow-y-auto mb-4">
-                {/* Name Field */}
-                <div>
-                  <label className="block text-sm font-medium text-black mb-2">
-                    Name <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="Enter handler name"
-                    value={handlerData.name}
-                    onChange={(e) => setHandlerData((prev) => ({ ...prev, name: e.target.value }))}
-                    className="w-full h-10 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  />
-                </div>
+              {/* Scrollable Content */}
+              <div className="flex-1 overflow-y-auto px-[12px]">
+                <div className="space-y-6 pb-4">
+                  {/* Name Field */}
+                  <div>
+                    <label className="block text-sm font-medium text-black mb-2">
+                      Name <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="Enter handler name"
+                      value={handlerData.name}
+                      onChange={(e) =>
+                        setHandlerData((prev) => ({ ...prev, name: e.target.value }))
+                      }
+                      className="w-full h-10 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    />
+                  </div>
 
-                {/* Description Field */}
-                <div>
-                  <label className="block text-sm font-medium text-black mb-2">Description</label>
-                  <input
-                    type="text"
-                    placeholder="Enter description"
-                    value={handlerData.description}
-                    onChange={(e) =>
-                      setHandlerData((prev) => ({ ...prev, description: e.target.value }))
-                    }
-                    className="w-full h-10 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  />
-                </div>
+                  {/* Description Field */}
+                  <div>
+                    <label className="block text-sm font-medium text-black mb-2">Description</label>
+                    <input
+                      type="text"
+                      placeholder="Enter description"
+                      value={handlerData.description}
+                      onChange={(e) =>
+                        setHandlerData((prev) => ({ ...prev, description: e.target.value }))
+                      }
+                      className="w-full h-10 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    />
+                  </div>
 
-                {/* Tag Field */}
-                <div>
-                  <label className="block text-sm font-medium text-black mb-2">Tag</label>
-                  <select
-                    value={handlerData.tag}
-                    onChange={(e) => setHandlerData((prev) => ({ ...prev, tag: e.target.value }))}
-                    className="w-full h-10 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
-                    aria-label="Select tag"
-                  >
-                    <option value="">Select</option>
-                    <option value="urgent">Urgent</option>
-                    <option value="normal">Normal</option>
-                    <option value="low">Low</option>
-                  </select>
-                </div>
+                  {/* Tag Field */}
+                  <div>
+                    <label className="block text-sm font-medium text-black mb-2">Tag</label>
+                    <select
+                      value={handlerData.tag}
+                      onChange={(e) => setHandlerData((prev) => ({ ...prev, tag: e.target.value }))}
+                      className="w-full h-10 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                      aria-label="Select tag"
+                    >
+                      <option value="">Select</option>
+                      <option value="urgent">Urgent</option>
+                      <option value="normal">Normal</option>
+                      <option value="low">Low</option>
+                    </select>
+                  </div>
 
-                {/* Notification Type Field */}
-                <div>
-                  <label className="block text-sm font-medium text-black mb-2">
-                    Notification type
-                  </label>
-                  <select
-                    value={handlerData.notificationType}
-                    onChange={(e) =>
-                      setHandlerData((prev) => ({ ...prev, notificationType: e.target.value }))
-                    }
-                    className="w-full h-10 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
-                    aria-label="Select notification type"
-                  >
-                    <option value="">Select</option>
-                    <option value="email">Email</option>
-                    <option value="sms">SMS</option>
-                    <option value="push">Push Notification</option>
-                    <option value="whatsapp">WhatsApp</option>
-                  </select>
+                  {/* Notification Type Field */}
+                  <div>
+                    <label className="block text-sm font-medium text-black mb-2">
+                      Notification type
+                    </label>
+                    <select
+                      value={handlerData.notificationType}
+                      onChange={(e) =>
+                        setHandlerData((prev) => ({ ...prev, notificationType: e.target.value }))
+                      }
+                      className="w-full h-10 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                      aria-label="Select notification type"
+                    >
+                      <option value="">Select</option>
+                      <option value="email">Email</option>
+                      <option value="sms">SMS</option>
+                      <option value="push">Push Notification</option>
+                      <option value="whatsapp">WhatsApp</option>
+                    </select>
+                  </div>
                 </div>
               </div>
 
-              {/* Save Button - Fixed at bottom right */}
-              <div className="flex justify-end mt-4">
-                <button
-                  className="w-[81px] h-[40px] bg-[#1D9D74]  text-white rounded-md font-medium hover:bg-[#1a8a66] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                  onClick={handleSaveHandler}
-                  disabled={isLoading}
-                >
-                  {isLoading ? 'Saving...' : 'Save'}
-                </button>
+              {/* Save Button - Fixed at bottom */}
+              <div className="pt-[16px] pr-[12px] pb-[24px] pl-[12px] ">
+                <div className="flex justify-end">
+                  <button
+                    className="w-[81px] h-[40px] bg-[#1D9D74] text-white rounded-md font-medium hover:bg-[#1a8a66] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    onClick={handleSaveHandler}
+                    disabled={isLoading}
+                  >
+                    {isLoading ? 'Saving...' : 'Save'}
+                  </button>
+                </div>
               </div>
             </div>
           </div>
