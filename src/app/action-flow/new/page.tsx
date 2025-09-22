@@ -287,20 +287,22 @@ const NewActionFlowPage = () => {
 
         {/* Left Handler Panel - Overlay */}
         {showHandlerPanel && (
-          <div className="fixed left-[14px] top-[85px] w-[380px] h-[681px] bg-white rounded-[12px] shadow-lg flex flex-col z-20">
+          <div className="fixed left-[14px] top-[85px] w-[380px] h-[681px] bg-white rounded-[12px] shadow-[0_4px_24px_rgba(0,0,0,0.08)] flex flex-col z-20">
             <div className="flex flex-col h-full">
               {/* Header */}
-              <div className="pt-[24px] pr-[12px] pl-[12px] pb-[16px]">
-                <h2 className="text-lg font-semibold text-black">Enter Handler details</h2>
+              <div className="pt-[24px] px-[24px] pb-[24px] ">
+                <h2 className="text-[18px] font-semibold text-[#1F1F1F] leading-[24px]">
+                  Enter Handler details
+                </h2>
               </div>
 
               {/* Scrollable Content */}
-              <div className="flex-1 overflow-y-auto px-[12px]">
-                <div className="space-y-6 pb-4">
+              <div className="flex-1 overflow-y-auto px-[24px] py-[24px]">
+                <div className="space-y-[24px]">
                   {/* Name Field */}
                   <div>
-                    <label className="block text-sm font-medium text-black mb-2">
-                      Name <span className="text-red-500">*</span>
+                    <label className="block text-[14px] font-medium text-[#1F1F1F] mb-[8px] leading-[20px]">
+                      Name <span className="text-[#EF4444]">*</span>
                     </label>
                     <input
                       type="text"
@@ -309,13 +311,15 @@ const NewActionFlowPage = () => {
                       onChange={(e) =>
                         setHandlerData((prev) => ({ ...prev, name: e.target.value }))
                       }
-                      className="w-full h-10 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className="w-full h-[40px] px-[12px] border border-[#D1D5DB] rounded-[8px] focus:outline-none focus:ring-2 focus:ring-[#3B82F6] focus:border-transparent text-[14px] text-[#1F1F1F] placeholder:text-[#9CA3AF] bg-white"
                     />
                   </div>
 
                   {/* Description Field */}
                   <div>
-                    <label className="block text-sm font-medium text-black mb-2">Description</label>
+                    <label className="block text-[14px] font-medium text-[#1F1F1F] mb-[8px] leading-[20px]">
+                      Description
+                    </label>
                     <input
                       type="text"
                       placeholder="Enter description"
@@ -323,29 +327,39 @@ const NewActionFlowPage = () => {
                       onChange={(e) =>
                         setHandlerData((prev) => ({ ...prev, description: e.target.value }))
                       }
-                      className="w-full h-10 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className="w-full h-[40px] px-[12px] border border-[#D1D5DB] rounded-[8px] focus:outline-none focus:ring-2 focus:ring-[#3B82F6] focus:border-transparent text-[14px] text-[#1F1F1F] placeholder:text-[#9CA3AF] bg-white"
                     />
                   </div>
 
                   {/* Tag Field */}
                   <div>
-                    <label className="block text-sm font-medium text-black mb-2">Tag</label>
+                    <label className="block text-[14px] font-medium text-[#1F1F1F] mb-[8px] leading-[20px]">
+                      Tag
+                    </label>
                     <select
                       value={handlerData.tag}
                       onChange={(e) => setHandlerData((prev) => ({ ...prev, tag: e.target.value }))}
-                      className="w-full h-10 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                      className="w-full h-[40px] px-[12px] border border-[#D1D5DB] rounded-[8px] focus:outline-none focus:ring-2 focus:ring-[#3B82F6] focus:border-transparent bg-white text-[14px] text-[#1F1F1F] appearance-none cursor-pointer"
                       aria-label="Select tag"
                     >
-                      <option value="">Select</option>
-                      <option value="urgent">Urgent</option>
-                      <option value="normal">Normal</option>
-                      <option value="low">Low</option>
+                      <option value="" className="text-[#9CA3AF]">
+                        Select
+                      </option>
+                      <option value="urgent" className="text-[#1F1F1F]">
+                        Urgent
+                      </option>
+                      <option value="normal" className="text-[#1F1F1F]">
+                        Normal
+                      </option>
+                      <option value="low" className="text-[#1F1F1F]">
+                        Low
+                      </option>
                     </select>
                   </div>
 
                   {/* Notification Type Field */}
                   <div>
-                    <label className="block text-sm font-medium text-black mb-2">
+                    <label className="block text-[14px] font-medium text-[#1F1F1F] mb-[8px] leading-[20px]">
                       Notification type
                     </label>
                     <select
@@ -353,14 +367,24 @@ const NewActionFlowPage = () => {
                       onChange={(e) =>
                         setHandlerData((prev) => ({ ...prev, notificationType: e.target.value }))
                       }
-                      className="w-full h-10 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                      className="w-full h-[40px] px-[12px] border border-[#D1D5DB] rounded-[8px] focus:outline-none focus:ring-2 focus:ring-[#3B82F6] focus:border-transparent bg-white text-[14px] text-[#1F1F1F] appearance-none cursor-pointer"
                       aria-label="Select notification type"
                     >
-                      <option value="">Select</option>
-                      <option value="email">Email</option>
-                      <option value="sms">SMS</option>
-                      <option value="push">Push Notification</option>
-                      <option value="whatsapp">WhatsApp</option>
+                      <option value="" className="text-[#9CA3AF]">
+                        Select
+                      </option>
+                      <option value="email" className="text-[#1F1F1F]">
+                        Email
+                      </option>
+                      <option value="sms" className="text-[#1F1F1F]">
+                        SMS
+                      </option>
+                      <option value="push" className="text-[#1F1F1F]">
+                        Push Notification
+                      </option>
+                      <option value="whatsapp" className="text-[#1F1F1F]">
+                        WhatsApp
+                      </option>
                     </select>
                   </div>
                 </div>
@@ -370,7 +394,7 @@ const NewActionFlowPage = () => {
               <div className="pt-[16px] pr-[12px] pb-[24px] pl-[12px] ">
                 <div className="flex justify-end">
                   <button
-                    className="w-[81px] h-[40px] bg-[#1D9D74] text-white rounded-md font-medium hover:bg-[#1a8a66] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-[81px] h-[40px] bg-[#1D9D74] text-white rounded-[8px] font-medium text-[14px] hover:bg-[#1a8a66] transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
                     onClick={handleSaveHandler}
                     disabled={isLoading}
                   >
@@ -393,10 +417,10 @@ const NewActionFlowPage = () => {
         {/* Canvas */}
         <div className="absolute inset-0 bg-[#FAFAFA] overflow-auto">
           {/* Left toolbar */}
-          <div className="absolute left-[12px] top-[233px] w-[56px] h-[432px] bg-white border border-[#DEDEDE] rounded-lg flex flex-col items-center py-4 gap-3 shadow-sm z-10">
+          <div className="absolute left-[12px] top-[233px] w-[56px] h-[432px] bg-white  rounded-lg flex flex-col items-center py-4 gap-3 shadow-sm z-10">
             {/* 1. Database Icon - Recipients */}
             <button
-              className="w-8 h-8 bg-[#F3F4F6] rounded-md flex items-center justify-center hover:bg-[#E5E7EB] transition-colors"
+              className="w-8 h-8  rounded-md flex items-center justify-center hover:bg-[#E5E7EB] transition-colors"
               onClick={handleStorageIconClick}
               title="Add Recipients"
             >
@@ -405,7 +429,7 @@ const NewActionFlowPage = () => {
 
             {/* 2. Hierarchical Structure - Binary/Multiple Conditions */}
             <button
-              className="w-8 h-8 bg-[#F3F4F6] rounded-md flex items-center justify-center hover:bg-[#E5E7EB] transition-colors"
+              className="w-8 h-8  rounded-md flex items-center justify-center hover:bg-[#E5E7EB] transition-colors"
               title="Add Conditions"
               onClick={handleConditionIconClick}
             >
@@ -414,7 +438,7 @@ const NewActionFlowPage = () => {
 
             {/* 3. Network/Connections - Channel Router */}
             <button
-              className="w-8 h-8 bg-[#F3F4F6] rounded-md flex items-center justify-center hover:bg-[#E5E7EB] transition-colors"
+              className="w-8 h-8  rounded-md flex items-center justify-center hover:bg-[#E5E7EB] transition-colors"
               title="Add Channel Router"
             >
               <HubIcon fontSize="small" className="text-[#6B7280]" />
@@ -422,7 +446,7 @@ const NewActionFlowPage = () => {
 
             {/* 4. Clock with Plus - Schedule */}
             <button
-              className="w-8 h-8 bg-[#F3F4F6] rounded-md flex items-center justify-center hover:bg-[#E5E7EB] transition-colors"
+              className="w-8 h-8  rounded-md flex items-center justify-center hover:bg-[#E5E7EB] transition-colors"
               title="Add Schedule"
             >
               <ScheduleIcon fontSize="small" className="text-[#6B7280]" />
@@ -430,7 +454,7 @@ const NewActionFlowPage = () => {
 
             {/* 5. Clock with Hourglass - Delay */}
             <button
-              className="w-8 h-8 bg-[#F3F4F6] rounded-md flex items-center justify-center hover:bg-[#E5E7EB] transition-colors"
+              className="w-8 h-8  rounded-md flex items-center justify-center hover:bg-[#E5E7EB] transition-colors"
               title="Add Delay"
             >
               <HourglassEmptyIcon fontSize="small" className="text-[#6B7280]" />
@@ -438,7 +462,7 @@ const NewActionFlowPage = () => {
 
             {/* 6. Document/Page - Template */}
             <button
-              className="w-8 h-8 bg-[#F3F4F6] rounded-md flex items-center justify-center hover:bg-[#E5E7EB] transition-colors"
+              className="w-8 h-8  rounded-md flex items-center justify-center hover:bg-[#E5E7EB] transition-colors"
               title="Add Template"
             >
               <DescriptionIcon fontSize="small" className="text-[#6B7280]" />
@@ -446,7 +470,7 @@ const NewActionFlowPage = () => {
 
             {/* 7. Person with Plus - Recipients */}
             <button
-              className="w-8 h-8 bg-[#F3F4F6] rounded-md flex items-center justify-center hover:bg-[#E5E7EB] transition-colors"
+              className="w-8 h-8  rounded-md flex items-center justify-center hover:bg-[#E5E7EB] transition-colors"
               title="Add Recipients"
             >
               <PersonAddIcon fontSize="small" className="text-[#6B7280]" />
@@ -454,7 +478,7 @@ const NewActionFlowPage = () => {
 
             {/* 8. Calendar - Schedule */}
             <button
-              className="w-8 h-8 bg-[#F3F4F6] rounded-md flex items-center justify-center hover:bg-[#E5E7EB] transition-colors"
+              className="w-8 h-8  rounded-md flex items-center justify-center hover:bg-[#E5E7EB] transition-colors"
               title="Add Calendar"
             >
               <CalendarTodayIcon fontSize="small" className="text-[#6B7280]" />
@@ -462,7 +486,7 @@ const NewActionFlowPage = () => {
 
             {/* 9. Large Hierarchical Structure - Workflow Node */}
             <button
-              className="w-8 h-8 bg-[#F3F4F6] rounded-md flex items-center justify-center hover:bg-[#E5E7EB] transition-colors"
+              className="w-8 h-8  rounded-md flex items-center justify-center hover:bg-[#E5E7EB] transition-colors"
               title="Add Workflow Node"
             >
               <AccountTreeOutlinedIcon fontSize="small" className="text-[#6B7280]" />
