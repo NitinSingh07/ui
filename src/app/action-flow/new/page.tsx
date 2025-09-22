@@ -18,6 +18,7 @@ import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import AccountTreeOutlinedIcon from '@mui/icons-material/AccountTreeOutlined';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import FlashOnIcon from '@mui/icons-material/FlashOn';
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import RecipientsPanel from './components/RecipientsPanel';
@@ -520,15 +521,21 @@ const NewActionFlowPage = () => {
             ) : (
               <div className="flex items-center justify-center h-full">
                 <button
-                  className={`w-[172px] h-[48px] rounded-[6px] text-white text-sm font-medium shadow-lg transition-colors flex items-center justify-center gap-[10px] border-[4px] border-[#1F1F1F]/20 px-[24px] py-[10px] ${
+                  className={`w-[172px] h-[48px] rounded-[6px] text-white font-medium transition-colors flex items-center justify-center gap-[10px] border-[4px] border-[#1F1F1F]/20 px-[24px] py-[10px] ${
                     showHandlerPanel
                       ? 'bg-gray-400 cursor-not-allowed opacity-50'
                       : 'bg-[#1F1F1F] hover:bg-[#2F2F2F] cursor-pointer'
                   }`}
+                  style={{
+                    position: 'fixed',
+                    top: '425px',
+                    left: '634px',
+                    boxShadow: '0px 4px 4px 0px rgba(31, 31, 31, 0.2)',
+                  }}
                   onClick={() => !showHandlerPanel && setShowHandlerPanel(true)}
                   disabled={showHandlerPanel}
                 >
-                  <span className="text-white">⚡</span>
+                  <FlashOnIcon className="text-white" fontSize="small" />
                   Click to start
                 </button>
               </div>

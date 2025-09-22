@@ -182,7 +182,7 @@ const ActionFlow = () => {
 
             <div className="px-2 py-1">
               <a className="flex items-center gap-3 px-3 py-2 rounded cursor-pointer bg-[#E6F4F1] text-[#1D9D74]">
-                <MoreHorizIcon fontSize="small" />
+                <AccountTreeOutlinedIcon fontSize="small" className="text-[#1D9D74]" />
                 {!collapsed && <span>Action flow</span>}
               </a>
             </div>
