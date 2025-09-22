@@ -692,34 +692,48 @@ const NewActionFlowPage = () => {
           </div>
 
           {/* Bottom toolbar */}
-          <div className="relative w-[280px] h-[48px] top-[794px] left-[580px]  bg-white border border-[#DEDEDE] rounded-full px-4 py-2 flex items-center gap-4 shadow-sm z-10">
+          <div className="relative w-[280px] h-[48px] px-[12px] top-[794px] left-[580px] bg-white rounded-[6px]  flex items-center shadow-[0_4px_24px_rgba(0,0,0,0.08)] z-10">
+            {/* Zoom controls group */}
+            <div className="flex items-center gap-[12px]">
+              <button
+                className="w-[56x] h-[48px] flex items-center justify-center text-[#1F1F1F] hover:text-[#3B82F6] transition-colors"
+                title="Zoom In"
+              >
+                <AddIcon fontSize="small" />
+              </button>
+              <button
+                className="w-[56px] h-[48px] flex items-center justify-center text-[#1F1F1F] hover:text-[#3B82F6] transition-colors"
+                title="Zoom Out"
+              >
+                <RemoveIcon fontSize="small" />
+              </button>
+            </div>
+
+            {/* Separator */}
+            <div className="w-[1px] h-[24px] bg-[#E5E7EB] "></div>
+
+            {/* Undo/Redo group */}
+            <div className="flex items-center gap-[8px]">
+              <button
+                className="w-[56px] h-[48px] flex items-center justify-center text-[#1F1F1F] hover:text-[#3B82F6] transition-colors"
+                title="Undo"
+              >
+                <UndoIcon fontSize="small" />
+              </button>
+              <button
+                className="w-[56px] h-[48px] flex items-center justify-center text-[#1F1F1F] hover:text-[#3B82F6] transition-colors"
+                title="Redo"
+              >
+                <RedoIcon fontSize="small" />
+              </button>
+            </div>
+
+            {/* Separator */}
+            <div className="w-[1px] h-[24px] bg-[#E5E7EB] "></div>
+
+            {/* Help button */}
             <button
-              className="w-6 h-6 flex items-center justify-center text-[#6B7280] hover:text-[#374151] transition-colors"
-              title="Undo"
-            >
-              <UndoIcon fontSize="small" />
-            </button>
-            <button
-              className="w-6 h-6 flex items-center justify-center text-[#6B7280] hover:text-[#374151] transition-colors"
-              title="Redo"
-            >
-              <RedoIcon fontSize="small" />
-            </button>
-            <button
-              className="w-6 h-6 flex items-center justify-center text-[#6B7280] hover:text-[#374151] transition-colors"
-              title="Zoom Out"
-            >
-              <RemoveIcon fontSize="small" />
-            </button>
-            <span className="text-sm text-[#6B7280]">100%</span>
-            <button
-              className="w-6 h-6 flex items-center justify-center text-[#6B7280] hover:text-[#374151] transition-colors"
-              title="Zoom In"
-            >
-              <AddIcon fontSize="small" />
-            </button>
-            <button
-              className="w-6 h-6 flex items-center justify-center text-[#6B7280] hover:text-[#374151] transition-colors"
+              className="w-[56px] h-[48px] flex items-center justify-center text-[#1F1F1F] hover:text-[#3B82F6] transition-colors"
               title="Help"
             >
               <HelpOutlineIcon fontSize="small" />
