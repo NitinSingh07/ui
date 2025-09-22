@@ -287,11 +287,11 @@ const NewActionFlowPage = () => {
 
         {/* Left Handler Panel - Overlay */}
         {showHandlerPanel && (
-          <div className="absolute left-[14px] top-[8px] w-[380px] h-[680px] bg-white rounded-xl shadow-lg flex flex-col z-20 overflow-hidden">
-            <div className="pt-[24px] pb-[24px] pl-[12px] pr-[12px] flex-1 flex flex-col">
+          <div className="fixed left-[14px] top-[85px] w-[380px] h-[681px] bg-white rounded-[12px] shadow-lg flex flex-col z-20">
+            <div className="pt-[24px] pr-[12px] pb-[24px] pl-[12px] flex flex-col h-full">
               <h2 className="text-lg font-semibold text-black mb-6">Enter Handler details</h2>
 
-              <div className="space-y-6 flex-1">
+              <div className="space-y-6 flex-1 overflow-y-auto mb-4">
                 {/* Name Field */}
                 <div>
                   <label className="block text-sm font-medium text-black mb-2">
@@ -359,7 +359,7 @@ const NewActionFlowPage = () => {
               </div>
 
               {/* Save Button - Fixed at bottom right */}
-              <div className="mt-auto flex  justify-end">
+              <div className="flex justify-end mt-4">
                 <button
                   className="w-[81px] h-[40px] bg-[#1D9D74]  text-white rounded-md font-medium hover:bg-[#1a8a66] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                   onClick={handleSaveHandler}
@@ -375,7 +375,7 @@ const NewActionFlowPage = () => {
         {/* Backdrop/Overlay - Only behind handler panel */}
         {showHandlerPanel && (
           <div
-            className="absolute left-[14px] top-[8px] w-[380px] h-[680px] bg-black bg-opacity-20 z-[5] rounded-xl"
+            className="fixed left-[14px] top-[85px] w-[380px] h-[781px] bg-black bg-opacity-20 rounded-[12px]"
             onClick={() => setShowHandlerPanel(false)}
           />
         )}
@@ -642,8 +642,13 @@ const NewActionFlowPage = () => {
             ) : (
               <div className="flex items-center justify-center">
                 <button
-                  className="w-[172px] h-[48px] rounded-[6px] bg-[#1F1F1F] text-white text-sm font-medium shadow-lg hover:bg-[#2F2F2F] transition-colors flex items-center justify-center gap-[10px] border-[4px] border-[#1F1F1F]/20 px-[24px] py-[10px]"
-                  onClick={() => setShowHandlerPanel(true)}
+                  className={`w-[172px] h-[48px] rounded-[6px] text-white text-sm font-medium shadow-lg transition-colors flex items-center justify-center gap-[10px] border-[4px] border-[#1F1F1F]/20 px-[24px] py-[10px] ${
+                    showHandlerPanel
+                      ? 'bg-gray-400 cursor-not-allowed opacity-50'
+                      : 'bg-[#1F1F1F] hover:bg-[#2F2F2F] cursor-pointer'
+                  }`}
+                  onClick={() => !showHandlerPanel && setShowHandlerPanel(true)}
+                  disabled={showHandlerPanel}
                 >
                   <span className="text-white">⚡</span>
                   Click to start
