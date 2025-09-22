@@ -136,61 +136,49 @@ const GoJSWorkflow: React.FC<GoJSWorkflowProps> = ({
       }),
       $(
         go.Panel,
-        'Vertical',
+        'Table',
         { margin: 8 },
-        // Branch label (True/False) above the node
-        $(
-          go.TextBlock,
-          {
-            font: 'bold 12px sans-serif',
-            stroke: '#6b7280',
-            alignment: go.Spot.Center,
-            margin: new go.Margin(0, 0, 8, 0),
-          },
-          new go.Binding('text', 'branchLabel'),
-          new go.Binding('visible', 'branchLabel', (label) => !!label)
-        ),
-        // Main content panel
         $(
           go.Panel,
-          'Table',
+          'Horizontal',
+          { row: 0, column: 0, alignment: go.Spot.Left },
+          // Icon based on category
           $(
-            go.Panel,
-            'Horizontal',
-            { row: 0, column: 0, alignment: go.Spot.Left },
-            // Icon based on category
-            $(
-              go.Picture,
-              {
-                margin: new go.Margin(0, 6, 0, 6),
-                width: 16,
-                height: 16,
-                imageStretch: go.GraphObject.Uniform,
-              },
-              new go.Binding('source', 'icon')
-            ),
-            $(
-              go.TextBlock,
-              {
-                font: 'bold 13px sans-serif',
-                stroke: '#1f2937',
-              },
-              new go.Binding('text', 'name')
-            )
+            go.Picture,
+            {
+              row: 0,
+              column: 0,
+              margin: new go.Margin(0, 6, 0, 6),
+              width: 16,
+              height: 16,
+              imageStretch: go.GraphObject.Uniform,
+            },
+            new go.Binding('source', 'icon')
           ),
           $(
             go.TextBlock,
             {
-              font: '11px sans-serif',
-              stroke: '#6b7280',
-              row: 1,
-              column: 0,
-              margin: new go.Margin(2, 0, 0, 6),
-              maxLines: 2,
-              overflow: go.TextOverflow.Ellipsis,
+              font: 'bold 13px sans-serif',
+              stroke: '#1f2937',
+              row: 0,
+              column: 1,
             },
-            new go.Binding('text', 'description')
+            new go.Binding('text', 'name')
           )
+        ),
+        $(
+          go.TextBlock,
+          {
+            font: '11px sans-serif',
+            stroke: '#6b7280',
+            row: 1,
+            column: 0,
+            columnSpan: 2,
+            margin: new go.Margin(2, 0, 0, 6),
+            maxLines: 2,
+            overflow: go.TextOverflow.Ellipsis,
+          },
+          new go.Binding('text', 'description')
         )
       )
     );
@@ -299,7 +287,6 @@ const GoJSWorkflow: React.FC<GoJSWorkflowProps> = ({
           description: 'Push, Whatsapp, Email select...',
           category: 'channel',
           icon: createIconUrl('email'),
-          branchLabel: 'False',
         });
 
         linkDataArray.push({
@@ -373,7 +360,6 @@ const GoJSWorkflow: React.FC<GoJSWorkflowProps> = ({
             description: 'Digest logic and template',
             category: 'digest',
             icon: createIconUrl('settings'),
-            branchLabel: 'True',
           },
           {
             key: inappKey,
@@ -413,6 +399,58 @@ const GoJSWorkflow: React.FC<GoJSWorkflowProps> = ({
 
     // Set the model
     diagram.model = new go.GraphLinksModel(nodeDataArray, linkDataArray);
+
+    // Add floating text labels after diagram is rendered
+    diagram.addDiagramListener('InitialLayoutCompleted', () => {
+      if (conditionSaved && conditionNode) {
+        const conditionNodeObj = diagram.findNodeForKey(conditionKey);
+        if (conditionNodeObj) {
+          const conditionPos = conditionNodeObj.location;
+
+          // Add False text
+          if (falseBranchNodes.length > 0) {
+            const falseText = $(
+              go.Part,
+              {
+                layerName: 'Foreground',
+                location: new go.Point(conditionPos.x - 80, conditionPos.y + 65),
+                selectable: false,
+                pickable: false,
+              },
+              $(go.TextBlock, {
+                text: 'False',
+                font: 'bold 14px sans-serif',
+                stroke: '#6b7280',
+                background: 'rgba(255, 255, 255, 0.9)',
+                margin: new go.Margin(4, 8, 4, 8),
+              })
+            );
+            diagram.add(falseText);
+          }
+
+          // Add True text
+          if (trueBranchNodes.length > 0) {
+            const trueText = $(
+              go.Part,
+              {
+                layerName: 'Foreground',
+                location: new go.Point(conditionPos.x + 240, conditionPos.y + 65),
+                selectable: false,
+                pickable: false,
+              },
+              $(go.TextBlock, {
+                text: 'True',
+                font: 'bold 14px sans-serif',
+                stroke: '#6b7280',
+                background: 'rgba(255, 255, 255, 0.9)',
+                margin: new go.Margin(4, 8, 4, 8),
+              })
+            );
+            diagram.add(trueText);
+          }
+        }
+      }
+    });
 
     // Cleanup function
     return () => {
