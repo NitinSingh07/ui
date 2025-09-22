@@ -73,7 +73,7 @@ const ActionFlow = () => {
   const filtered = useMemo(() => {
     const q = searchQuery.trim().toLowerCase();
     if (!q) return workflows;
-    return workflows.filter((w) => w.name.toLowerCase().includes(q));
+    return workflows.filter((w: Workflow) => w.name.toLowerCase().includes(q));
   }, [workflows, searchQuery]);
 
   const startEdit = (id: number, currentName: string, currentDesc: string) => {
