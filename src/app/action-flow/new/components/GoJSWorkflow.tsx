@@ -136,49 +136,61 @@ const GoJSWorkflow: React.FC<GoJSWorkflowProps> = ({
       }),
       $(
         go.Panel,
-        'Table',
+        'Vertical',
         { margin: 8 },
+        // Branch label (True/False) above the node
+        $(
+          go.TextBlock,
+          {
+            font: 'bold 12px sans-serif',
+            stroke: '#6b7280',
+            alignment: go.Spot.Center,
+            margin: new go.Margin(0, 0, 8, 0),
+          },
+          new go.Binding('text', 'branchLabel'),
+          new go.Binding('visible', 'branchLabel', (label) => !!label)
+        ),
+        // Main content panel
         $(
           go.Panel,
-          'Horizontal',
-          { row: 0, column: 0, alignment: go.Spot.Left },
-          // Icon based on category
+          'Table',
           $(
-            go.Picture,
-            {
-              row: 0,
-              column: 0,
-              margin: new go.Margin(0, 6, 0, 6),
-              width: 16,
-              height: 16,
-              imageStretch: go.GraphObject.Uniform,
-            },
-            new go.Binding('source', 'icon')
+            go.Panel,
+            'Horizontal',
+            { row: 0, column: 0, alignment: go.Spot.Left },
+            // Icon based on category
+            $(
+              go.Picture,
+              {
+                margin: new go.Margin(0, 6, 0, 6),
+                width: 16,
+                height: 16,
+                imageStretch: go.GraphObject.Uniform,
+              },
+              new go.Binding('source', 'icon')
+            ),
+            $(
+              go.TextBlock,
+              {
+                font: 'bold 13px sans-serif',
+                stroke: '#1f2937',
+              },
+              new go.Binding('text', 'name')
+            )
           ),
           $(
             go.TextBlock,
             {
-              font: 'bold 13px sans-serif',
-              stroke: '#1f2937',
-              row: 0,
-              column: 1,
+              font: '11px sans-serif',
+              stroke: '#6b7280',
+              row: 1,
+              column: 0,
+              margin: new go.Margin(2, 0, 0, 6),
+              maxLines: 2,
+              overflow: go.TextOverflow.Ellipsis,
             },
-            new go.Binding('text', 'name')
+            new go.Binding('text', 'description')
           )
-        ),
-        $(
-          go.TextBlock,
-          {
-            font: '11px sans-serif',
-            stroke: '#6b7280',
-            row: 1,
-            column: 0,
-            columnSpan: 2,
-            margin: new go.Margin(2, 0, 0, 6),
-            maxLines: 2,
-            overflow: go.TextOverflow.Ellipsis,
-          },
-          new go.Binding('text', 'description')
         )
       )
     );
@@ -200,13 +212,15 @@ const GoJSWorkflow: React.FC<GoJSWorkflowProps> = ({
       $(
         go.TextBlock,
         {
-          font: '12px sans-serif',
-          stroke: '#6b7280',
+          font: 'bold 12px sans-serif',
+          stroke: '#1f2937',
+          background: 'rgba(255, 255, 255, 0.9)',
           segmentIndex: 0,
-          segmentFraction: 0.5,
-          segmentOffset: new go.Point(0, -20),
+          segmentFraction: 0.2,
+          segmentOffset: new go.Point(0, -12),
+          margin: new go.Margin(3, 6, 3, 6),
         },
-        new go.Binding('text', 'label')
+        new go.Binding('text', 'label').makeTwoWay()
       )
     );
 
@@ -285,12 +299,12 @@ const GoJSWorkflow: React.FC<GoJSWorkflowProps> = ({
           description: 'Push, Whatsapp, Email select...',
           category: 'channel',
           icon: createIconUrl('email'),
+          branchLabel: 'False',
         });
 
         linkDataArray.push({
           from: conditionKey,
           to: channelKey,
-          label: 'False',
         });
 
         // Sub-nodes from Channel
@@ -359,6 +373,7 @@ const GoJSWorkflow: React.FC<GoJSWorkflowProps> = ({
             description: 'Digest logic and template',
             category: 'digest',
             icon: createIconUrl('settings'),
+            branchLabel: 'True',
           },
           {
             key: inappKey,
@@ -388,7 +403,6 @@ const GoJSWorkflow: React.FC<GoJSWorkflowProps> = ({
           {
             from: conditionKey,
             to: digestKey,
-            label: 'True',
           },
           { from: digestKey, to: inappKey },
           { from: inappKey, to: delayKey },
