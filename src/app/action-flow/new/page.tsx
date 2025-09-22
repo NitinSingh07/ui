@@ -17,6 +17,7 @@ import DescriptionIcon from '@mui/icons-material/Description';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import AccountTreeOutlinedIcon from '@mui/icons-material/AccountTreeOutlined';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import RecipientsPanel from './components/RecipientsPanel';
@@ -240,8 +241,8 @@ const NewActionFlowPage = () => {
       {/* Main Header */}
       <div className="h-16 bg-white border-b border-[#DEDEDE] flex items-center justify-between px-6">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded bg-green-500 text-white flex items-center justify-center">
-            <span className="text-sm font-bold">↑</span>
+          <div className="w-8 h-8 rounded bg-[#389F7F] text-white flex items-center justify-center">
+            <AccountTreeOutlinedIcon fontSize="small" />
           </div>
           <h1 className="text-lg font-medium text-[#1F1F1F]">
             {workflowNode ? workflowNode.name : 'Untitled'}
@@ -261,7 +262,7 @@ const NewActionFlowPage = () => {
           <button
             className={`h-9 px-4 rounded-md flex items-center gap-2 transition-all duration-300 ${
               recipientsNode
-                ? 'bg-[#1D9D74] text-white hover:bg-[#1a8a66] cursor-pointer transform hover:scale-105'
+                ? 'bg-[#389F7F] text-white  cursor-pointer transform hover:scale-105'
                 : 'bg-[#E5E7EB] text-[#9CA3AF] cursor-not-allowed'
             }`}
             disabled={!recipientsNode}

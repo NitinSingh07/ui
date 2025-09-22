@@ -137,7 +137,7 @@ const GoJSWorkflow: React.FC<GoJSWorkflowProps> = ({
       $(
         go.Panel,
         'Table',
-        { margin: 10 },
+        { margin: 8 },
         $(
           go.Panel,
           'Horizontal',
@@ -148,9 +148,9 @@ const GoJSWorkflow: React.FC<GoJSWorkflowProps> = ({
             {
               row: 0,
               column: 0,
-              margin: new go.Margin(0, 8, 0, 8),
-              width: 20,
-              height: 20,
+              margin: new go.Margin(0, 6, 0, 6),
+              width: 16,
+              height: 16,
               imageStretch: go.GraphObject.Uniform,
             },
             new go.Binding('source', 'icon')
@@ -158,7 +158,7 @@ const GoJSWorkflow: React.FC<GoJSWorkflowProps> = ({
           $(
             go.TextBlock,
             {
-              font: 'bold 14px sans-serif',
+              font: 'bold 13px sans-serif',
               stroke: '#1f2937',
               row: 0,
               column: 1,
@@ -169,12 +169,12 @@ const GoJSWorkflow: React.FC<GoJSWorkflowProps> = ({
         $(
           go.TextBlock,
           {
-            font: '12px sans-serif',
+            font: '11px sans-serif',
             stroke: '#6b7280',
             row: 1,
             column: 0,
             columnSpan: 2,
-            margin: new go.Margin(4, 0, 0, 8),
+            margin: new go.Margin(2, 0, 0, 6),
             maxLines: 2,
             overflow: go.TextOverflow.Ellipsis,
           },

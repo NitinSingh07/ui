@@ -13,6 +13,7 @@ import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import EventIcon from '@mui/icons-material/Event';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import ArticleIcon from '@mui/icons-material/Article';
+import AccountTreeOutlinedIcon from '@mui/icons-material/AccountTreeOutlined';
 import GroupIcon from '@mui/icons-material/Group';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import LanguageIcon from '@mui/icons-material/Language';
@@ -232,10 +233,10 @@ const ActionFlow = () => {
         {/* Top header bar */}
         <div className="h-16 bg-white border-b border-[#DEDEDE] flex items-center justify-between px-6">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded bg-green-500 text-white flex items-center justify-center">
-              <span className="text-sm font-bold">↑</span>
+            <div className="w-10 h-10 rounded-lg bg-[#E6F4F1] flex items-center justify-center">
+              <AccountTreeOutlinedIcon className="text-[#1D9D74]" fontSize="small" />
             </div>
-            <h1 className="text-lg font-medium text-text-primary">Action flow</h1>
+            <span className="text-lg font-medium text-text-primary">Action flow</span>
           </div>
           <div className="flex items-center gap-3">
             <NotificationsNoneOutlinedIcon className="text-text-secondary" />
